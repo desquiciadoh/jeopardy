@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Своя Игра</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page-bg"></div>
+
+  <main class="app">
+    <header class="hero">
+      <h1 class="hero__title">Своя Игра</h1>
+      <p class="hero__uni">Княгининский университет</p>
+    </header>
+
+    <section id="teams-section" class="panel teams-panel"></section>
+    <section id="board-section" class="panel board-panel"></section>
+    <section id="question-overlay" class="question-overlay hidden"></section>
+    <section id="final-section" class="panel final-panel hidden"></section>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
