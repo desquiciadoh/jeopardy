@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Своя Игра</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg-1: #090d22;
+      --bg-2: #151b3a;
+      --bg-3: #1f1145;
+      --card: rgba(255, 255, 255, 0.06);
+      --border: rgba(255, 255, 255, 0.12);
+      --text: #ffffff;
+      --muted: rgba(255, 255, 255, 0.68);
+      --gold: #ffd54a;
+      --gold-2: #ffb800;
+      --cyan: #4adfff;
+      --purple: #9c6bff;
+      --pink: #ff5fc7;
+      --green: #27d67a;
+      --red: #ff5d73;
+      --shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+      --radius: 22px;
+    }
+
+    body {
+      font-family: "Montserrat", sans-serif;
+      background: linear-gradient(135deg, var(--bg-1), var(--bg-3), var(--bg-2));
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .page-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(74, 223, 255, 0.1), transparent 28%),
+        radial-gradient(circle at 85% 15%, rgba(156, 107, 255, 0.14), transparent 32%),
+        radial-gradient(circle at 50% 80%, rgba(255, 213, 74, 0.08), transparent 34%);
+    }
+
+    .app {
+      position: relative;
+      z-index: 1;
+      max-width: 1250px;
+      margin: 0 auto;
+      padding: 24px 18px 56px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .hero__title {
+      font-size: clamp(2.2rem, 7vw, 4.2rem);
+      font-weight: 900;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #fff3a5, var(--gold), var(--gold-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 22px rgba(255, 213, 74, 0.25));
+    }
+
+    .hero__uni {
+      margin-top: 10px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
+    }
+
+    .teams-panel,
+    .board-panel,
+    .final-panel {
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+
+    .section-title__icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      color: #fff;
+      font-size: 1.1rem;
+    }
+
+    .team-topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .team-add {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .team-add input {
+      width: 240px;
+      max-width: 100%;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.07);
+      color: #fff;
+      border-radius: 12px;
+      padding: 12px 14px;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .team-add input:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 4px rgba(74, 223, 255, 0.08);
+    }
+
+    .btn {
+      border: none;
+      cursor: pointer;
+      border-radius: 12px;
+      font-family: inherit;
+      font-weight: 700;
+      transition: 0.22s ease;
+    }
+
+    .btn:hover {
+      opacity: 0.92;
+    }
+
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .btn--main {
+      background: linear-gradient(135deg, var(--cyan), #168ef3);
+      color: #fff;
+      padding: 12px 18px;
+    }
+
+    .btn--soft {
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+      padding: 12px 18px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .btn--gold {
+      background: linear-gradient(135deg, var(--gold), var(--gold-2));
+      color: #151515;
+      padding: 12px 18px;
+    }
+
+    .btn--green {
+      background: linear-gradient(135deg, #35e48d, #17b866);
+      color: #fff;
+      padding: 13px 18px;
+    }
+
+    .btn--red {
+      background: linear-gradient(135deg, #ff7085, #eb435c);
+      color: #fff;
+      padding: 13px 18px;
+    }
+
+    .btn--purple {
+      background: linear-gradient(135deg, var(--purple), var(--pink));
+      color: #fff;
+      padding: 13px 18px;
+    }
+
+    .teams-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+      gap: 16px;
+    }
+
+    .team-card {
+      background: linear-gradient(145deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .team-card.active {
+      border-color: rgba(255, 213, 74, 0.55);
+      box-shadow: 0 0 0 2px rgba(255, 213, 74, 0.18), 0 16px 35px rgba(0,0,0,0.28);
+    }
+
+    .team-card__name {
+      color: var(--cyan);
+      font-size: 1.05rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      word-break: break-word;
+    }
+
+    .team-card__score {
+      font-size: 2.3rem;
+      color: var(--gold);
+      font-weight: 900;
+      margin-bottom: 16px;
+    }
+
+    .team-card__actions {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .team-card__actions .btn {
+      flex: 1;
+      min-height: 42px;
+    }
+
+    .team-card__bottom {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .team-select-btn {
+      flex: 1;
+    }
+
+    .team-remove-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255,255,255,0.34);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.84rem;
+    }
+
+    .team-remove-btn:hover {
+      color: var(--red);
+    }
+
+    .empty-state {
+      color: var(--muted);
+      text-align: center;
+      padding: 28px 12px;
+    }
+
+    .round-status {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .round-status__left {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .round-status__label {
+      color: var(--muted);
+      font-size: 0.82rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .round-status__title {
+      font-size: 1.35rem;
+      font-weight: 800;
+    }
+
+    .round-status__right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .round-accordion {
+      overflow: hidden;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .round-accordion__body {
+      padding: 16px;
+    }
+
+    .game-board {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .theme-row {
+      display: flex;
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .theme-title {
+      width: 180px;
+      min-width: 180px;
+      min-height: 112px;
+      background: linear-gradient(135deg, rgba(74,223,255,0.12), rgba(156,107,255,0.14));
+      border: 1px solid rgba(74,223,255,0.22);
+      border-radius: 16px;
+      padding: 14px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: var(--cyan);
+      text-align: center;
+      line-height: 1.35;
+    }
+
+    .theme-cells {
+      display: flex;
+      flex: 1;
+      gap: 12px;
+    }
+
+    .question-cell {
+      flex: 1;
+      min-height: 112px;
+      background: linear-gradient(145deg, rgba(255,213,74,0.1), rgba(255,213,74,0.03));
+      border: 1px solid rgba(255,213,74,0.2);
+      border-radius: 16px;
+      padding: 12px 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      text-align: center;
+    }
+
+    .question-cell--used {
+      opacity: 0.32;
+      pointer-events: none;
+      background: rgba(255,255,255,0.03);
+      border-color: rgba(255,255,255,0.05);
+    }
+
+    .question-cell__price {
+      font-size: 1.75rem;
+      color: var(--gold);
+      font-weight: 900;
+    }
+
+    .question-cell__play {
+      min-width: 92px;
+      padding: 8px 12px;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .board-hint {
+      margin-top: 18px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.92rem;
+    }
+
+    .board-hint strong {
+      color: var(--gold);
+    }
+
+    .question-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      background: rgba(5, 8, 22, 0.76);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .question-modal {
+      width: 100%;
+      max-width: 860px;
+      background: linear-gradient(145deg, rgba(19,25,55,0.96), rgba(10,14,34,0.98));
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 28px;
+      box-shadow: 0 28px 70px rgba(0,0,0,0.45);
+      padding: 34px 30px 28px;
+    }
+
+    .question-modal__top {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .question-modal__theme {
+      color: var(--cyan);
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 0.85rem;
+      margin-bottom: 8px;
+    }
+
+    .question-modal__price {
+      color: var(--gold);
+      font-size: 3rem;
+      font-weight: 900;
+      margin-bottom: 16px;
+    }
+
+    .question-modal__team {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 14px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.09);
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+
+    .question-modal__team strong {
+      color: #fff;
+    }
+
+    .question-modal__text {
+      text-align: center;
+      font-size: 1.45rem;
+      line-height: 1.65;
+      font-weight: 700;
+      margin-bottom: 26px;
+    }
+
+    .answer-box {
+      display: none;
+      margin-bottom: 24px;
+      text-align: center;
+      background: rgba(39,214,122,0.08);
+      border: 1px solid rgba(39,214,122,0.25);
+      color: #baf6d3;
+      border-radius: 16px;
+      padding: 18px 16px;
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+
+    .answer-box.visible {
+      display: block;
+    }
+
+    .question-actions {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .question-actions .btn {
+      min-height: 52px;
+      font-size: 0.98rem;
+    }
+
+    .final-panel {
+      text-align: center;
+    }
+
+    .final-title {
+      font-size: 2rem;
+      font-weight: 900;
+      margin-bottom: 10px;
+      color: var(--gold);
+    }
+
+    .final-subtitle {
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .leaderboard {
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .leaderboard-item {
+      display: grid;
+      grid-template-columns: 80px 1fr 140px;
+      gap: 14px;
+      align-items: center;
+      padding: 18px;
+      border-radius: 18px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .leaderboard-item--1 {
+      border-color: rgba(255,213,74,0.42);
+      box-shadow: 0 0 0 1px rgba(255,213,74,0.18);
+    }
+
+    .leaderboard-place {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--gold);
+    }
+
+    .leaderboard-name {
+      text-align: left;
+      font-size: 1.08rem;
+      font-weight: 800;
+      color: var(--cyan);
+      word-break: break-word;
+    }
+
+    .leaderboard-score {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: #fff;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 900px) {
+      .theme-row {
+        flex-direction: column;
+      }
+
+      .theme-title {
+        width: 100%;
+        min-width: 100%;
+      }
+
+      .theme-cells {
+        flex-wrap: wrap;
+      }
+
+      .question-cell {
+        min-width: calc(50% - 6px);
+        flex: unset;
+      }
+
+      .question-actions {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .app {
+        padding: 14px 12px 40px;
+      }
+
+      .teams-panel,
+      .board-panel,
+      .final-panel {
+        padding: 18px;
+      }
+
+      .team-add {
+        width: 100%;
+      }
+
+      .team-add input,
+      .team-add .btn {
+        width: 100%;
+      }
+
+      .question-modal {
+        padding: 26px 18px 20px;
+      }
+
+      .question-modal__text {
+        font-size: 1.15rem;
+      }
+
+      .question-modal__price {
+        font-size: 2.35rem;
+      }
+
+      .leaderboard-item {
+        grid-template-columns: 56px 1fr 90px;
+        gap: 10px;
+        padding: 14px;
+      }
+
+      .leaderboard-score {
+        font-size: 1.2rem;
+      }
+    }
+    
+  </style>
+
+  <div class="page-bg"></div>
+
+  <main class="app">
+    <header class="hero">
+      <h1 class="hero__title">Своя Игра</h1>
+      <p class="hero__uni">Княгининский университет</p>
+    </header>
+
+    <section id="teams-section" class="panel teams-panel"></section>
+    <section id="board-section" class="panel board-panel"></section>
+    <section id="question-overlay" class="question-overlay hidden"></section>
+    <section id="final-section" class="panel final-panel hidden"></section>
+  </main>
+
+  <script>
+    const GAME_CONFIG = {
+    title: "Своя Игра",
+    event: "День космонавтики",
+    university: "Университет",
+    rounds: [
+      {
+        name: "Раунд 1",
+        themes: [
+          {
+            name: "Гагаринский старт",
+            questions: [
+              { price: 100, question: "Назовите точную дату (день, месяц, год) первого полета человека в космос.", answer: "12 апреля 1961 года" },
+              { price: 200, question: "Как назывался космический корабль, на котором полетел Юрий Гагарин?", answer: "Восток-1" },
+              { price: 300, question: "Сколько минут длился полет Юрия Гагарина?", answer: "108 минут" },
+              { price: 400, question: "Как звучал позывной Юрия Гагарина во время его исторического полета?", answer: "Кедр" }
+            ]
+          },
+          {
+            name: "Соседи Земли",
+            questions: [
+              { price: 100, question: "Какая планета Солнечной системы самая большая?", answer: "Юпитер" },
+              { price: 200, question: "Какая планета Солнечной системы самая горячая?", answer: "Венера" },
+              { price: 300, question: "На какой планете находится гора Олимп — самый высокий вулкан в Солнечной системе?", answer: "Марс" },
+              { price: 400, question: "Какую планету астрономы в 2006 году лишили статуса «полноценной» планеты, переведя в разряд карликовых?", answer: "Плутон" }
+            ]
+          },
+          {
+            name: "Первопроходцы",
+            questions: [
+              { price: 100, question: "Как назывался первый искусственный спутник Земли, запущенный в 1957 году?", answer: "Спутник-1" },
+              { price: 200, question: "Кто первым из землян вышел в открытый космос?", answer: "Алексей Леонов" },
+              { price: 300, question: "Как звали первую женщину-космонавта?", answer: "Валентина Терешкова" },
+              { price: 400, question: "Кто был дублером Юрия Гагарина перед первым полетом?", answer: "Герман Титов" }
+            ]
+          },
+          {
+            name: "Небо над головой",
+            questions: [
+              { price: 100, question: "Как называется галактика, в которой мы живем?", answer: "Млечный Путь" },
+              { price: 200, question: "Какое небесное тело вызывает приливы и отливы на Земле?", answer: "Луна" },
+              { price: 300, question: "Как называется явление, при котором Луна полностью или частично закрывает Солнце от наблюдателя на Земле?", answer: "Солнечное затмение" },
+              { price: 400, question: "Что измеряют в световых годах?", answer: "Расстояние" }
+            ]
+          }
+        ]
+      },
+      {
+        name: "Раунд 2",
+        themes: [
+          {
+            name: "Биология и Люди",
+            questions: [
+              { price: 100, question: "Как звали собак, которые первыми совершили орбитальный полет и успешно вернулись на Землю?", answer: "Белка и Стрелка" },
+              { price: 200, question: "Какое животное стало первым живым существом, выведенным на орбиту Земли (к сожалению, не вернувшимся)?", answer: "Собака Лайка" },
+              { price: 300, question: "Кто произнес знаменитую фразу: «Это один маленький шаг для человека, но гигантский скачок для всего человечества»?", answer: "Нил Армстронг" },
+              { price: 400, question: "Кто стал первой женщиной, вышедшей в открытый космос (СССР, 1984 год)?", answer: "Светлана Савицкая" }
+            ]
+          },
+          {
+            name: "Тайны планет",
+            questions: [
+              { price: 100, question: "Из чего в основном состоят кольца Сатурна?", answer: "Из льда и пыли" },
+              { price: 200, question: "У какой планеты Солнечной системы на данный момент открыто больше всего спутников?", answer: "Сатурн" },
+              { price: 300, question: "Какая планета вращается, «лежа на боку»?", answer: "Уран" },
+              { price: 400, question: "Какая планета Солнечной системы вращается вокруг своей оси по часовой стрелке (в отличие от большинства других)?", answer: "Венера" }
+            ]
+          },
+          {
+            name: "Физика и Орбиты",
+            questions: [
+              { price: 100, question: "Сколько градусов в полной круговой орбите?", answer: "360 градусов" },
+              { price: 200, question: "Какую геометрическую фигуру описывает орбита большинства планет?", answer: "Эллипс" },
+              { price: 300, question: "Чему примерно равна первая космическая скорость для Земли?", answer: "7,9 км/с" },
+              { price: 400, question: "Почему ракеты выгоднее запускать как можно ближе к экватору и в восточном направлении?", answer: "Чтобы использовать скорость вращения Земли для придания ракете дополнительного ускорения" }
+            ]
+          },
+          {
+            name: "Звезды и Дальний космос",
+            questions: [
+              { price: 100, question: "Какого цвета самые горячие звезды во Вселенной?", answer: "Синие / Голубые" },
+              { price: 200, question: "Какая ближайшая к Земле звезда (после Солнца)?", answer: "Проксима Центавра" },
+              { price: 300, question: "Как называется ближайшая к нам гигантская спиральная галактика, которая движется навстречу Млечному Пути?", answer: "Галактика Андромеды" },
+              { price: 400, question: "Что является границей черной дыры, за пределы которой не может вырваться даже свет?", answer: "Горизонт событий" }
+            ]
+          }
+        ]
+      },
+      {
+        name: "Раунд 3",
+        themes: [
+          {
+            name: "Творцы и Законы",
+            questions: [
+              { price: 100, question: "Кто был Главным конструктором советской ракетно-космической программы в годы первых космических триумфов?", answer: "Сергей Павлович Королёв" },
+              { price: 200, question: "Кто является основоположником теоретической космонавтики и автором формулы, определяющей скорость ракеты?", answer: "Константин Эдуардович Циолковский" },
+              { price: 300, question: "Кто открыл три закона движения планет вокруг Солнца?", answer: "Иоганн Кеплер" },
+              { price: 400, question: "Согласно общей теории относительности Эйнштейна, что происходит со временем вблизи сверхмассивных объектов?", answer: "Время замедляется" }
+            ]
+          },
+          {
+            name: "Аппараты и Станции",
+            questions: [
+              { price: 100, question: "Как называлась первая в мире орбитальная космическая станция, запущенная СССР в 1971 году?", answer: "Салют-1" },
+              { price: 200, question: "Назовите советскую станцию, которая стала первой в мире многомодульной орбитальной станцией (работала с 1986 по 2001 год).", answer: "Станция «Мир»" },
+              { price: 300, question: "Какая советская автоматическая станция первой в мире сфотографировала обратную сторону Луны?", answer: "Луна-3" },
+              { price: 400, question: "Какой космический аппарат стал первым искусственным объектом, покинувшим пределы Солнечной системы?", answer: "Вояджер-1" }
+            ]
+          },
+          {
+            name: "Технологии и Термины",
+            questions: [
+              { price: 100, question: "Как называется точка орбиты спутника Земли, наиболее близкая к центру нашей планеты?", answer: "Перигей" },
+              { price: 200, question: "Как называется точка орбиты спутника Земли, наиболее удаленная от центра нашей планеты?", answer: "Апогей" },
+              { price: 300, question: "Какой газ чаще всего используется в качестве окислителя в современных ракетах-носителях (жидкостных ракетных двигателях)?", answer: "Жидкий кислород" },
+              { price: 400, question: "Как называется знаменитый космический телескоп, запущенный в 1990 году, который сделал тысячи снимков глубокого космоса?", answer: "Телескоп «Хаббл»" }
+            ]
+          },
+          {
+            name: "Разное и История",
+            questions: [
+              { price: 100, question: "Какой шоколадный батончик носит то же имя, что и планета, названная в честь древнеримского бога войны?", answer: "Mars (Марс)" },
+              { price: 200, question: "Как назывался советский орбитальный корабль-ракетоплан многоразового использования, совершивший свой единственный полет в 1988 году?", answer: "Буран" },
+              { price: 300, question: "Какой американский шаттл потерпел катастрофу при старте 28 января 1986 года?", answer: "Челленджер" },
+              { price: 400, question: "Кто до сих пор носит статус самого молодого человека, побывавшего в космосе (на момент полета)?", answer: "Герман Титов" }
+            ]
+          }
+        ]
+      }
+    ]
+  };
+
+  </script>
+  <script>
+    const state = {
+    teams: [],
+    selectedTeamId: null,
+    currentRoundIndex: 0,
+    roundOpen: true,
+    activeQuestion: null,
+    usedQuestions: new Set(),
+    gameFinished: false,
+    answerShown: false
+  };
+
+  const teamsSection = document.getElementById("teams-section");
+  const boardSection = document.getElementById("board-section");
+  const questionOverlay = document.getElementById("question-overlay");
+  const finalSection = document.getElementById("final-section");
+
+  function escapeHtml(value) {
+    return String(value)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;");
+  }
+
+  function getQuestionKey(roundIndex, themeIndex, questionIndex) {
+    return `${roundIndex}-${themeIndex}-${questionIndex}`;
+  }
+
+  function isQuestionUsed(roundIndex, themeIndex, questionIndex) {
+    return state.usedQuestions.has(getQuestionKey(roundIndex, themeIndex, questionIndex));
+  }
+
+  function isRoundCompleted(roundIndex) {
+    const round = GAME_CONFIG.rounds[roundIndex];
+    for (let themeIndex = 0; themeIndex < round.themes.length; themeIndex += 1) {
+      for (let questionIndex = 0; questionIndex < round.themes[themeIndex].questions.length; questionIndex += 1) {
+        if (!isQuestionUsed(roundIndex, themeIndex, questionIndex)) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  function getCurrentRound() {
+    return GAME_CONFIG.rounds[state.currentRoundIndex];
+  }
+
+  function getRemainingQuestionsInRound(roundIndex) {
+    const round = GAME_CONFIG.rounds[roundIndex];
+    let total = 0;
+    round.themes.forEach((theme, themeIndex) => {
+      theme.questions.forEach((_, questionIndex) => {
+        if (!isQuestionUsed(roundIndex, themeIndex, questionIndex)) {
+          total += 1;
+        }
+      });
+    });
+    return total;
+  }
+
+  function sortTeamsByScore() {
+    return [...state.teams].sort((a, b) => b.score - a.score);
+  }
+
+  function addTeam() {
+    const input = document.getElementById("team-name-input");
+    if (!input) return;
+
+    const name = input.value.trim();
+    if (!name) return;
+
+    state.teams.push({
+      id: Date.now() + Math.random(),
+      name,
+      score: 0
+    });
+
+    if (state.selectedTeamId === null) {
+      state.selectedTeamId = state.teams[0].id;
+    }
+
+    input.value = "";
+    render();
+  }
+
+  function removeTeam(teamId) {
+    const team = state.teams.find((item) => item.id === teamId);
+    if (!team) return;
+
+    const confirmed = window.confirm(`Удалить команду «${team.name}»?`);
+    if (!confirmed) return;
+
+    state.teams = state.teams.filter((item) => item.id !== teamId);
+
+    if (state.selectedTeamId === teamId) {
+      state.selectedTeamId = state.teams.length ? state.teams[0].id : null;
+    }
+
+    render();
+  }
+
+  function changeTeamScore(teamId, amount) {
+    const team = state.teams.find((item) => item.id === teamId);
+    if (!team) return;
+    team.score += amount;
+    renderTeams();
+  }
+
+  function selectTeam(teamId) {
+    state.selectedTeamId = teamId;
+    renderTeams();
+    renderBoard();
+  }
+
+  function openQuestion(roundIndex, themeIndex, questionIndex) {
+    if (state.gameFinished) return;
+    if (state.selectedTeamId === null) {
+      alert("Сначала выберите команду, которая отвечает.");
+      return;
+    }
+
+    const key = getQuestionKey(roundIndex, themeIndex, questionIndex);
+    if (state.usedQuestions.has(key)) return;
+
+    const round = GAME_CONFIG.rounds[roundIndex];
+    const theme = round.themes[themeIndex];
+    const question = theme.questions[questionIndex];
+    const team = state.teams.find((item) => item.id === state.selectedTeamId);
+
+    state.activeQuestion = {
+      roundIndex,
+      themeIndex,
+      questionIndex,
+      question,
+      themeName: theme.name,
+      teamId: team ? team.id : null
+    };
+
+    state.answerShown = false;
+    questionOverlay.classList.remove("hidden");
+    renderQuestionModal();
+  }
+
+  function closeQuestion() {
+    state.activeQuestion = null;
+    state.answerShown = false;
+    questionOverlay.classList.add("hidden");
+    questionOverlay.innerHTML = "";
+  }
+
+  function showAnswer() {
+    state.answerShown = true;
+    renderQuestionModal();
+  }
+
+  function renderQuestionModal() {
+    if (!state.activeQuestion) return;
+
+    const activeTeam = state.teams.find((item) => item.id === state.activeQuestion.teamId);
+    const { question, themeName } = state.activeQuestion;
+
+    questionOverlay.innerHTML = `
+      <div class="question-modal">
+        <div class="question-modal__top">
+          <div class="question-modal__theme">${escapeHtml(themeName)}</div>
+          <div class="question-modal__price">${question.price}</div>
+          <div class="question-modal__team">
+            <span>Отвечает:</span>
+            <strong>${activeTeam ? escapeHtml(activeTeam.name) : "Команда не выбрана"}</strong>
+          </div>
+        </div>
+
+        <div class="question-modal__text">${escapeHtml(question.question)}</div>
+
+        <div class="answer-box ${state.answerShown ? "visible" : ""}">
+          ${escapeHtml(question.answer)}
+        </div>
+
+        <div class="question-actions">
+          ${
+            state.answerShown
+              ? `
+                <button class="btn btn--green" onclick="handleCorrectAnswer()">Верно</button>
+                <button class="btn btn--red" onclick="handleWrongAnswer()">Неверно</button>
+              `
+              : `
+                <button class="btn btn--purple" onclick="showAnswer()">Показать ответ</button>
+                <button class="btn btn--soft" onclick="closeQuestion()">Вернуться назад</button>
+              `
+          }
+        </div>
+      </div>
+    `;
+  }
+
+  function markQuestionAsUsed() {
+    const { roundIndex, themeIndex, questionIndex } = state.activeQuestion;
+    state.usedQuestions.add(getQuestionKey(roundIndex, themeIndex, questionIndex));
+  }
+
+  function handleCorrectAnswer() {
+    if (!state.activeQuestion) return;
+
+    const team = state.teams.find((item) => item.id === state.activeQuestion.teamId);
+    if (team) {
+      team.score += state.activeQuestion.question.price;
+    }
+
+    markQuestionAsUsed();
+    proceedAfterAnswer();
+  }
+
+  function handleWrongAnswer() {
+    if (!state.activeQuestion) return;
+
+    const team = state.teams.find((item) => item.id === state.activeQuestion.teamId);
+    if (team) {
+      team.score -= state.activeQuestion.question.price;
+    }
+
+    markQuestionAsUsed();
+    proceedAfterAnswer();
+  }
+
+  function proceedAfterAnswer() {
+    const answeredRoundIndex = state.activeQuestion.roundIndex;
+    closeQuestion();
+
+    if (isRoundCompleted(answeredRoundIndex)) {
+      if (answeredRoundIndex < GAME_CONFIG.rounds.length - 1) {
+        state.currentRoundIndex = answeredRoundIndex + 1;
+        state.roundOpen = true;
+      } else {
+        finishGame();
+        return;
+      }
+    }
+
+    render();
+  }
+
+  function finishGame() {
+    state.gameFinished = true;
+    state.roundOpen = false;
+    teamsSection.classList.add("hidden");
+    boardSection.classList.add("hidden");
+    renderFinalLeaderboard();
+    finalSection.classList.remove("hidden");
+  }
+
+  function renderTeams() {
+    if (state.gameFinished) return;
+
+    teamsSection.innerHTML = `
+      <div class="team-topbar">
+        <div>
+          <h2 class="section-title">
+            <span class="section-title__icon">👥</span>
+            Команды
+          </h2>
+        </div>
+
+        <div class="team-add">
+          <input
+            id="team-name-input"
+            type="text"
+            placeholder="Название команды"
+            onkeydown="if(event.key === 'Enter') addTeam()"
+          />
+          <button class="btn btn--main" onclick="addTeam()">Добавить команду</button>
+        </div>
+      </div>
+
+      ${
+        state.teams.length === 0
+          ? `<div class="empty-state">Добавьте команды и выберите, кто отвечает.</div>`
+          : `
+            <div class="teams-grid">
+              ${state.teams.map((team) => `
+                <div class="team-card ${state.selectedTeamId === team.id ? "active" : ""}">
+                  <div class="team-card__name">${escapeHtml(team.name)}</div>
+                  <div class="team-card__score">${team.score}</div>
+
+                  <div class="team-card__actions">
+                    <button class="btn btn--red" onclick="changeTeamScore(${team.id}, -100)">−100</button>
+                    <button class="btn btn--green" onclick="changeTeamScore(${team.id}, 100)">+100</button>
+                  </div>
+
+                  <div class="team-card__bottom">
+                    <button class="btn btn--gold team-select-btn" onclick="selectTeam(${team.id})">
+                      ${state.selectedTeamId === team.id ? "Отвечает сейчас" : "Выбрать отвечающей"}
+                    </button>
+                    <button class="team-remove-btn" onclick="removeTeam(${team.id})">удалить</button>
+                  </div>
+                </div>
+              `).join("")}
+            </div>
+          `
+      }
+    `;
+  }
+
+  function renderBoard() {
+    if (state.gameFinished) return;
+
+    const round = getCurrentRound();
+    const remaining = getRemainingQuestionsInRound(state.currentRoundIndex);
+    const selectedTeam = state.teams.find((item) => item.id === state.selectedTeamId);
+
+    boardSection.innerHTML = `
+      <div class="round-status">
+        <div class="round-status__left">
+          <div class="round-status__label">Активный этап</div>
+          <div class="round-status__title">${escapeHtml(round.name)}</div>
+        </div>
+        <div class="round-status__right">
+          <div class="round-status__questions">Осталось вопросов: ${remaining}</div>
+          <button class="btn btn--soft" onclick="toggleCurrentRound()">
+            ${state.roundOpen ? "Скрыть" : "Раскрыть"}
+          </button>
+        </div>
+      </div>
+
+      ${
+        state.roundOpen
+          ? `
+            <div class="round-accordion">
+              <div class="round-accordion__body">
+                <div class="game-board">
+                  ${round.themes.map((theme, themeIndex) => `
+                    <div class="theme-row">
+                      <div class="theme-title">${escapeHtml(theme.name)}</div>
+                      <div class="theme-cells">
+                        ${theme.questions.map((question, questionIndex) => {
+                          const used = isQuestionUsed(state.currentRoundIndex, themeIndex, questionIndex);
+                          return `
+                            <div class="question-cell ${used ? "question-cell--used" : ""}">
+                              <div class="question-cell__price">${question.price}</div>
+                              <button
+                                class="btn btn--gold question-cell__play"
+                                ${used ? "disabled" : ""}
+                                onclick="openQuestion(${state.currentRoundIndex}, ${themeIndex}, ${questionIndex})"
+                              >
+                                Играть
+                              </button>
+                            </div>
+                          `;
+                        }).join("")}
+                      </div>
+                    </div>
+                  `).join("")}
+                </div>
+              </div>
+            </div>
+          `
+          : ""
+      }
+
+      <div class="board-hint">
+        ${
+          selectedTeam
+            ? `Сейчас отвечает: <strong>${escapeHtml(selectedTeam.name)}</strong>`
+            : `Сначала выберите <strong>отвечающую команду</strong> сверху`
+        }
+      </div>
+    `;
+  }
+
+  function toggleCurrentRound() {
+    state.roundOpen = !state.roundOpen;
+    renderBoard();
+  }
+
+  function renderFinalLeaderboard() {
+    const sortedTeams = sortTeamsByScore();
+
+    finalSection.innerHTML = `
+      <div class="final-title">Игра завершена</div>
+      <div class="final-subtitle">Итоговая таблица результатов</div>
+
+      ${
+        sortedTeams.length === 0
+          ? `<div class="empty-state">Команды не были добавлены.</div>`
+          : `
+            <div class="leaderboard">
+              ${sortedTeams.map((team, index) => `
+                <div class="leaderboard-item ${index === 0 ? "leaderboard-item--1" : ""}">
+                  <div class="leaderboard-place">${index + 1}</div>
+                  <div class="leaderboard-name">${escapeHtml(team.name)}</div>
+                  <div class="leaderboard-score">${team.score}</div>
+                </div>
+              `).join("")}
+            </div>
+          `
+      }
+    `;
+  }
+
+  function render() {
+    renderTeams();
+    renderBoard();
+  }
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !questionOverlay.classList.contains("hidden")) {
+      closeQuestion();
+    }
+  });
+
+  render();
+  </script>
+</body>
+</html>
