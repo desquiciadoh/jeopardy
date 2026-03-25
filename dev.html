@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Звёздная Игра — День Космонавтики</title>
+  <title>Своя Игра — День Космонавтики</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -53,7 +53,7 @@
       pointer-events: none;
       z-index: 0;
       overflow: hidden;
-      opacity: 0.5;
+      opacity: 1;
     }
 
     .star {
@@ -114,27 +114,26 @@
       100% { opacity: 0; }
     }
 
-    /* ========== NEBULA BG — very soft ========== */
+    /* ========== NEBULA BG ========== */
     .page-bg {
       position: fixed;
       inset: 0;
       pointer-events: none;
       z-index: 0;
-      opacity: 0.35;
-      filter: blur(80px);
+      opacity: 0.45;
+      filter: blur(70px);
       background:
-        radial-gradient(ellipse 700px 500px at 12% 18%, rgba(90, 60, 160, 0.25), transparent),
-        radial-gradient(ellipse 600px 400px at 82% 22%, rgba(40, 80, 180, 0.18), transparent),
-        radial-gradient(ellipse 500px 350px at 50% 80%, rgba(180, 120, 50, 0.12), transparent);
+        radial-gradient(ellipse 700px 500px at 12% 18%, rgba(90, 60, 160, 0.28), transparent),
+        radial-gradient(ellipse 600px 400px at 82% 22%, rgba(40, 80, 180, 0.22), transparent),
+        radial-gradient(ellipse 500px 350px at 50% 80%, rgba(180, 120, 50, 0.15), transparent);
     }
 
-    /* ========== FLOATING PLANET — subtle ========== */
+    /* ========== PLANETS ========== */
     .planet {
       position: fixed;
       border-radius: 50%;
       pointer-events: none;
       z-index: 0;
-      opacity: 0.18;
     }
 
     .planet--earth {
@@ -143,23 +142,107 @@
       bottom: -60px;
       left: -70px;
       background: radial-gradient(circle at 35% 35%, #5a9ec4, #2a5a8a 50%, #1a3a6a 80%);
-      box-shadow: 0 0 50px rgba(60, 140, 200, 0.15);
+      box-shadow: 0 0 60px rgba(60, 140, 200, 0.18);
+      opacity: 0.25;
       animation: float-planet 20s ease-in-out infinite;
     }
 
     .planet--small {
-      width: 60px;
-      height: 60px;
-      top: 12%;
-      right: 8%;
-      background: radial-gradient(circle at 35% 35%, #c8956a, #8a5a3a 60%);
-      box-shadow: 0 0 25px rgba(160, 100, 60, 0.10);
-      animation: float-planet 28s ease-in-out infinite reverse;
+      width: 70px;
+      height: 70px;
+      top: 10%;
+      right: 6%;
+      background: radial-gradient(circle at 35% 35%, #d4a070, #9a6040 60%);
+      box-shadow: 0 0 30px rgba(180, 110, 60, 0.12);
+      opacity: 0.28;
+      animation: float-planet 26s ease-in-out infinite reverse;
+    }
+
+    .planet--mid {
+      width: 90px;
+      height: 90px;
+      top: 55%;
+      left: 4%;
+      background: radial-gradient(circle at 35% 35%, #e0c070, #b89030 60%, #907020 85%);
+      box-shadow: 0 0 35px rgba(200, 160, 50, 0.10);
+      opacity: 0.22;
+      animation: float-planet 32s ease-in-out infinite;
+    }
+
+    /* Saturn ring */
+    .planet--mid::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 140px;
+      height: 32px;
+      border: 1.5px solid rgba(224, 192, 112, 0.25);
+      border-radius: 50%;
+      transform: translate(-50%, -50%) rotate(-18deg);
     }
 
     @keyframes float-planet {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-14px); }
+    }
+
+    /* ========== ROCKETS ========== */
+    .rocket {
+      position: fixed;
+      pointer-events: none;
+      z-index: 0;
+      font-size: 1.6rem;
+      opacity: 0;
+      filter: drop-shadow(0 0 8px rgba(255, 140, 60, 0.3));
+    }
+
+    .rocket--1 {
+      animation: rocket-fly-1 28s linear infinite;
+      animation-delay: 0s;
+    }
+
+    .rocket--2 {
+      animation: rocket-fly-2 34s linear infinite;
+      animation-delay: 10s;
+    }
+
+    @keyframes rocket-fly-1 {
+      0% {
+        bottom: -40px;
+        left: 8%;
+        opacity: 0;
+        transform: rotate(-48deg) scale(0.9);
+      }
+      4% { opacity: 0.45; }
+      85% { opacity: 0.45; }
+      92% { opacity: 0; }
+      100% {
+        bottom: 105%;
+        left: 65%;
+        opacity: 0;
+        transform: rotate(-48deg) scale(1);
+      }
+    }
+
+    @keyframes rocket-fly-2 {
+      0% {
+        bottom: -40px;
+        right: 12%;
+        left: auto;
+        opacity: 0;
+        transform: rotate(-38deg) scale(0.85);
+      }
+      3% { opacity: 0.4; }
+      80% { opacity: 0.4; }
+      90% { opacity: 0; }
+      100% {
+        bottom: 108%;
+        right: 60%;
+        left: auto;
+        opacity: 0;
+        transform: rotate(-38deg) scale(1.05);
+      }
     }
 
     /* ========== APP ========== */
@@ -825,6 +908,10 @@
         width: 130px;
         height: 130px;
       }
+
+      .planet--mid {
+        display: none;
+      }
     }
   </style>
 
@@ -832,13 +919,18 @@
   <div class="shooting-star"></div>
   <div class="shooting-star"></div>
   <div class="page-bg"></div>
+
   <div class="planet planet--earth"></div>
   <div class="planet planet--small"></div>
+  <div class="planet planet--mid"></div>
+
+  <div class="rocket rocket--1">🚀</div>
+  <div class="rocket rocket--2">🚀</div>
 
   <main class="app">
     <header class="hero">
       <div class="hero__badge">12 апреля — День космонавтики</div>
-      <h1 class="hero__title">Звёздная Игра</h1>
+      <h1 class="hero__title">Своя Игра</h1>
       <p class="hero__uni">Княгининский университет</p>
       <p class="hero__sub">Викторина, посвящённая покорению космоса</p>
       <div class="hero__divider">✦ ✧ ✦</div>
@@ -870,7 +962,7 @@
     })();
 
     const GAME_CONFIG = {
-      title: "Звёздная Игра",
+      title: "Своя Игра",
       event: "День космонавтики",
       university: "Княгининский университет",
       rounds: [
@@ -1076,7 +1168,7 @@
 
     function removeTeam(teamId) {
       const team = state.teams.find(t => t.id === teamId);
-      if (!team || !confirm(`Удалить команду «${team.name}»?`)) return;
+      if (!team || !confirm(`Удалить экипаж «${team.name}»?`)) return;
       state.teams = state.teams.filter(t => t.id !== teamId);
       if (state.selectedTeamId === teamId)
         state.selectedTeamId = state.teams.length ? state.teams[0].id : null;
@@ -1096,7 +1188,7 @@
 
     function openQuestion(ri, ti, qi) {
       if (state.gameFinished) return;
-      if (state.selectedTeamId === null) { alert("Сначала выберите команду."); return; }
+      if (state.selectedTeamId === null) { alert("Сначала выберите экипаж."); return; }
       if (state.usedQuestions.has(getQuestionKey(ri, ti, qi))) return;
       const round = GAME_CONFIG.rounds[ri];
       const theme = round.themes[ti];
@@ -1195,16 +1287,16 @@
           <div>
             <h2 class="section-title">
               <span class="section-title__icon">★</span>
-              Команды
+              Экипажи
             </h2>
           </div>
           <div class="team-add">
-            <input id="team-name-input" type="text" placeholder="Название команды" onkeydown="if(event.key==='Enter')addTeam()" />
+            <input id="team-name-input" type="text" placeholder="Название экипажа" onkeydown="if(event.key==='Enter')addTeam()" />
             <button class="btn btn--main" onclick="addTeam()">Добавить</button>
           </div>
         </div>
         ${state.teams.length === 0
-          ? `<div class="empty-state">Добавьте команды и выберите отвечающую.</div>`
+          ? `<div class="empty-state">Добавьте экипажи и выберите отвечающий.</div>`
           : `<div class="teams-grid">${state.teams.map(team => `
               <div class="team-card ${state.selectedTeamId === team.id ? "active" : ""}">
                 <div class="team-card__name">${escapeHtml(team.name)}</div>
@@ -1254,7 +1346,7 @@
                 </div>
               </div>`).join("")}
           </div></div></div>` : ""}
-        <div class="board-hint">${sel ? `Отвечает: <strong>${escapeHtml(sel.name)}</strong>` : `Выберите <strong>отвечающую команду</strong> выше`}</div>`;
+        <div class="board-hint">${sel ? `Отвечает: <strong>${escapeHtml(sel.name)}</strong>` : `Выберите <strong>отвечающий экипаж</strong> выше`}</div>`;
     }
 
     function toggleCurrentRound() {
@@ -1267,7 +1359,7 @@
       finalSection.innerHTML = `
         <div class="final-title">Миссия завершена</div>
         <div class="final-subtitle">Итоговая таблица результатов</div>
-        ${sorted.length === 0 ? `<div class="empty-state">Команды не добавлены.</div>` : `
+        ${sorted.length === 0 ? `<div class="empty-state">Экипажи не добавлены.</div>` : `
           <div class="leaderboard">${sorted.map((team, i) => `
             <div class="leaderboard-item ${i === 0 ? "leaderboard-item--1" : ""}">
               <div class="leaderboard-place">${i + 1}</div>
