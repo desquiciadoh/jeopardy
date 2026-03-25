@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Своя Игра</title>
+  <title>Своя Игра — День Космонавтики 🚀</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -17,42 +17,206 @@
     }
 
     :root {
-      --bg-1: #090d22;
-      --bg-2: #151b3a;
-      --bg-3: #1f1145;
-      --card: rgba(255, 255, 255, 0.06);
-      --border: rgba(255, 255, 255, 0.12);
-      --text: #ffffff;
-      --muted: rgba(255, 255, 255, 0.68);
+      --bg-1: #020810;
+      --bg-2: #0a1628;
+      --bg-3: #06102a;
+      --card: rgba(255, 255, 255, 0.04);
+      --border: rgba(255, 255, 255, 0.10);
+      --text: #e8edf5;
+      --muted: rgba(200, 215, 255, 0.60);
       --gold: #ffd54a;
       --gold-2: #ffb800;
-      --cyan: #4adfff;
-      --purple: #9c6bff;
+      --cyan: #64e8ff;
+      --purple: #a97cff;
       --pink: #ff5fc7;
       --green: #27d67a;
       --red: #ff5d73;
-      --shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+      --star-blue: #4fc3f7;
+      --nebula: #7c4dff;
+      --rocket-orange: #ff7043;
+      --shadow: 0 24px 60px rgba(0, 0, 0, 0.50);
       --radius: 22px;
     }
 
     body {
       font-family: "Montserrat", sans-serif;
-      background: linear-gradient(135deg, var(--bg-1), var(--bg-3), var(--bg-2));
+      background: var(--bg-1);
       color: var(--text);
       min-height: 100vh;
       overflow-x: hidden;
     }
 
+    /* ========== STAR FIELD ========== */
+    .starfield {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background: #fff;
+      animation: twinkle var(--dur) ease-in-out infinite alternate;
+    }
+
+    @keyframes twinkle {
+      0% { opacity: var(--min-op); transform: scale(1); }
+      100% { opacity: 1; transform: scale(1.3); }
+    }
+
+    /* ========== SHOOTING STARS ========== */
+    .shooting-star {
+      position: fixed;
+      width: 3px;
+      height: 3px;
+      background: #fff;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0;
+      animation: shoot 3s ease-in-out infinite;
+    }
+
+    .shooting-star::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 80px;
+      height: 1.5px;
+      background: linear-gradient(to right, rgba(255,255,255,0.8), transparent);
+      transform-origin: right center;
+      transform: translateX(100%);
+    }
+
+    .shooting-star:nth-child(1) {
+      top: 12%;
+      left: 70%;
+      animation-delay: 1s;
+    }
+
+    .shooting-star:nth-child(2) {
+      top: 35%;
+      left: 85%;
+      animation-delay: 5s;
+      animation-duration: 4s;
+    }
+
+    .shooting-star:nth-child(3) {
+      top: 60%;
+      left: 55%;
+      animation-delay: 9s;
+      animation-duration: 3.5s;
+    }
+
+    @keyframes shoot {
+      0% { opacity: 0; transform: translate(0, 0) rotate(-35deg); }
+      5% { opacity: 1; }
+      15% { opacity: 1; transform: translate(-200px, 120px) rotate(-35deg); }
+      20% { opacity: 0; transform: translate(-280px, 160px) rotate(-35deg); }
+      100% { opacity: 0; }
+    }
+
+    /* ========== NEBULA BG ========== */
     .page-bg {
       position: fixed;
       inset: 0;
       pointer-events: none;
+      z-index: 0;
       background:
-        radial-gradient(circle at 15% 20%, rgba(74, 223, 255, 0.1), transparent 28%),
-        radial-gradient(circle at 85% 15%, rgba(156, 107, 255, 0.14), transparent 32%),
-        radial-gradient(circle at 50% 80%, rgba(255, 213, 74, 0.08), transparent 34%);
+        radial-gradient(ellipse 900px 600px at 10% 15%, rgba(100, 60, 200, 0.12), transparent),
+        radial-gradient(ellipse 700px 500px at 85% 20%, rgba(30, 100, 220, 0.10), transparent),
+        radial-gradient(ellipse 600px 400px at 50% 85%, rgba(255, 112, 67, 0.06), transparent),
+        radial-gradient(ellipse 500px 500px at 70% 60%, rgba(76, 175, 255, 0.06), transparent);
     }
 
+    /* ========== FLOATING PLANET ========== */
+    .planet {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .planet--earth {
+      width: 180px;
+      height: 180px;
+      bottom: -40px;
+      left: -50px;
+      background: radial-gradient(circle at 35% 35%, #4fc3f7, #1565c0 50%, #0d47a1 80%);
+      box-shadow: 0 0 60px rgba(79, 195, 247, 0.25), inset -30px -20px 40px rgba(0,0,0,0.35);
+      animation: float-planet 18s ease-in-out infinite;
+    }
+
+    .planet--mars {
+      width: 100px;
+      height: 100px;
+      top: 80px;
+      right: 40px;
+      background: radial-gradient(circle at 35% 35%, #ff8a65, #d84315 60%, #bf360c 85%);
+      box-shadow: 0 0 40px rgba(255, 112, 67, 0.15), inset -15px -10px 25px rgba(0,0,0,0.3);
+      animation: float-planet 22s ease-in-out infinite reverse;
+    }
+
+    .planet--saturn {
+      width: 70px;
+      height: 70px;
+      top: 40%;
+      left: 60px;
+      background: radial-gradient(circle at 35% 35%, #ffe082, #f9a825 60%, #f57f17 85%);
+      box-shadow: 0 0 30px rgba(255, 213, 74, 0.12), inset -12px -8px 18px rgba(0,0,0,0.25);
+      animation: float-planet 25s ease-in-out infinite;
+    }
+
+    /* Saturn ring */
+    .planet--saturn::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 120px;
+      height: 30px;
+      border: 2px solid rgba(255, 224, 130, 0.35);
+      border-radius: 50%;
+      transform: translate(-50%, -50%) rotate(-20deg);
+    }
+
+    @keyframes float-planet {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-18px); }
+    }
+
+    /* ========== FLOATING ROCKET EMOJI ========== */
+    .rocket-float {
+      position: fixed;
+      font-size: 2.8rem;
+      z-index: 0;
+      pointer-events: none;
+      animation: rocket-fly 30s linear infinite;
+      filter: drop-shadow(0 0 12px rgba(255, 112, 67, 0.5));
+    }
+
+    @keyframes rocket-fly {
+      0% {
+        bottom: -60px;
+        left: 10%;
+        opacity: 0;
+        transform: rotate(-45deg) scale(0.8);
+      }
+      5% { opacity: 1; }
+      90% { opacity: 1; }
+      100% {
+        bottom: 110%;
+        left: 80%;
+        opacity: 0;
+        transform: rotate(-45deg) scale(1.1);
+      }
+    }
+
+    /* ========== APP ========== */
     .app {
       position: relative;
       z-index: 1;
@@ -61,9 +225,32 @@
       padding: 24px 18px 56px;
     }
 
+    /* ========== HERO ========== */
     .hero {
       text-align: center;
       margin-bottom: 24px;
+    }
+
+    .hero__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      background: rgba(255, 112, 67, 0.12);
+      border: 1px solid rgba(255, 112, 67, 0.25);
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--rocket-orange);
+      margin-bottom: 14px;
+      animation: pulse-badge 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse-badge {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255, 112, 67, 0.15); }
+      50% { box-shadow: 0 0 0 10px rgba(255, 112, 67, 0); }
     }
 
     .hero__title {
@@ -71,10 +258,10 @@
       font-weight: 900;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      background: linear-gradient(135deg, #fff3a5, var(--gold), var(--gold-2));
+      background: linear-gradient(135deg, #e8eaff, var(--star-blue), var(--cyan));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 0 22px rgba(255, 213, 74, 0.25));
+      filter: drop-shadow(0 0 28px rgba(100, 232, 255, 0.30));
     }
 
     .hero__uni {
@@ -82,16 +269,25 @@
       font-size: 1.05rem;
       font-weight: 700;
       letter-spacing: 0.08em;
-      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      background: linear-gradient(135deg, var(--gold), var(--rocket-orange));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
+    .hero__date {
+      margin-top: 8px;
+      font-size: 0.88rem;
+      color: var(--muted);
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+
+    /* ========== PANELS ========== */
     .panel {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      backdrop-filter: blur(14px);
+      backdrop-filter: blur(18px);
       box-shadow: var(--shadow);
     }
 
@@ -118,9 +314,10 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      background: linear-gradient(135deg, var(--star-blue), var(--nebula));
       color: #fff;
       font-size: 1.1rem;
+      box-shadow: 0 0 18px rgba(124, 77, 255, 0.20);
     }
 
     .team-topbar {
@@ -140,18 +337,19 @@
     .team-add input {
       width: 240px;
       max-width: 100%;
-      border: 1px solid rgba(255,255,255,0.16);
-      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(100, 232, 255, 0.16);
+      background: rgba(255,255,255,0.05);
       color: #fff;
       border-radius: 12px;
       padding: 12px 14px;
       outline: none;
       font-family: inherit;
+      transition: 0.25s;
     }
 
     .team-add input:focus {
-      border-color: var(--cyan);
-      box-shadow: 0 0 0 4px rgba(74, 223, 255, 0.08);
+      border-color: var(--star-blue);
+      box-shadow: 0 0 0 4px rgba(79, 195, 247, 0.12);
     }
 
     .btn {
@@ -165,30 +363,34 @@
 
     .btn:hover {
       opacity: 0.92;
+      transform: translateY(-1px);
     }
 
     .btn:disabled {
       opacity: 0.45;
       cursor: not-allowed;
+      transform: none;
     }
 
     .btn--main {
-      background: linear-gradient(135deg, var(--cyan), #168ef3);
+      background: linear-gradient(135deg, var(--star-blue), #1e88e5);
       color: #fff;
       padding: 12px 18px;
+      box-shadow: 0 4px 18px rgba(79, 195, 247, 0.18);
     }
 
     .btn--soft {
-      background: rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.06);
       color: #fff;
       padding: 12px 18px;
-      border: 1px solid rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.08);
     }
 
     .btn--gold {
       background: linear-gradient(135deg, var(--gold), var(--gold-2));
       color: #151515;
       padding: 12px 18px;
+      box-shadow: 0 4px 18px rgba(255, 184, 0, 0.15);
     }
 
     .btn--green {
@@ -204,9 +406,10 @@
     }
 
     .btn--purple {
-      background: linear-gradient(135deg, var(--purple), var(--pink));
+      background: linear-gradient(135deg, var(--nebula), var(--pink));
       color: #fff;
       padding: 13px 18px;
+      box-shadow: 0 4px 18px rgba(124, 77, 255, 0.15);
     }
 
     .teams-grid {
@@ -216,15 +419,21 @@
     }
 
     .team-card {
-      background: linear-gradient(145deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      border: 1px solid rgba(255,255,255,0.1);
+      background: linear-gradient(145deg, rgba(100, 232, 255, 0.04), rgba(124, 77, 255, 0.03));
+      border: 1px solid rgba(100, 232, 255, 0.10);
       border-radius: 18px;
       padding: 18px;
+      transition: 0.3s;
+    }
+
+    .team-card:hover {
+      border-color: rgba(100, 232, 255, 0.20);
     }
 
     .team-card.active {
-      border-color: rgba(255, 213, 74, 0.55);
-      box-shadow: 0 0 0 2px rgba(255, 213, 74, 0.18), 0 16px 35px rgba(0,0,0,0.28);
+      border-color: rgba(100, 232, 255, 0.50);
+      box-shadow: 0 0 0 2px rgba(100, 232, 255, 0.12), 0 16px 35px rgba(0,0,0,0.28),
+                  0 0 40px rgba(100, 232, 255, 0.06);
     }
 
     .team-card__name {
@@ -240,6 +449,7 @@
       color: var(--gold);
       font-weight: 900;
       margin-bottom: 16px;
+      text-shadow: 0 0 18px rgba(255, 213, 74, 0.20);
     }
 
     .team-card__actions {
@@ -267,10 +477,11 @@
     .team-remove-btn {
       background: transparent;
       border: none;
-      color: rgba(255,255,255,0.34);
+      color: rgba(255,255,255,0.30);
       cursor: pointer;
       font-family: inherit;
       font-size: 0.84rem;
+      transition: 0.2s;
     }
 
     .team-remove-btn:hover {
@@ -283,6 +494,7 @@
       padding: 28px 12px;
     }
 
+    /* ========== ROUND STATUS ========== */
     .round-status {
       display: flex;
       justify-content: space-between;
@@ -292,8 +504,8 @@
       margin-bottom: 20px;
       padding: 14px 16px;
       border-radius: 16px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(135deg, rgba(79, 195, 247, 0.05), rgba(124, 77, 255, 0.04));
+      border: 1px solid rgba(79, 195, 247, 0.12);
     }
 
     .round-status__left {
@@ -312,6 +524,9 @@
     .round-status__title {
       font-size: 1.35rem;
       font-weight: 800;
+      background: linear-gradient(135deg, var(--cyan), var(--star-blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .round-status__right {
@@ -324,8 +539,8 @@
     .round-accordion {
       overflow: hidden;
       border-radius: 18px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(79, 195, 247, 0.08);
+      background: rgba(255,255,255,0.02);
     }
 
     .round-accordion__body {
@@ -348,15 +563,15 @@
       width: 180px;
       min-width: 180px;
       min-height: 112px;
-      background: linear-gradient(135deg, rgba(74,223,255,0.12), rgba(156,107,255,0.14));
-      border: 1px solid rgba(74,223,255,0.22);
+      background: linear-gradient(135deg, rgba(124, 77, 255, 0.12), rgba(79, 195, 247, 0.10));
+      border: 1px solid rgba(124, 77, 255, 0.22);
       border-radius: 16px;
       padding: 14px 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 800;
-      color: var(--cyan);
+      color: var(--purple);
       text-align: center;
       line-height: 1.35;
     }
@@ -370,8 +585,8 @@
     .question-cell {
       flex: 1;
       min-height: 112px;
-      background: linear-gradient(145deg, rgba(255,213,74,0.1), rgba(255,213,74,0.03));
-      border: 1px solid rgba(255,213,74,0.2);
+      background: linear-gradient(145deg, rgba(255,213,74,0.08), rgba(255,184,0,0.03));
+      border: 1px solid rgba(255,213,74,0.18);
       border-radius: 16px;
       padding: 12px 10px;
       display: flex;
@@ -380,19 +595,48 @@
       align-items: center;
       gap: 10px;
       text-align: center;
+      transition: 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .question-cell:hover:not(.question-cell--used) {
+      border-color: rgba(255,213,74,0.35);
+      box-shadow: 0 0 20px rgba(255, 213, 74, 0.08);
+    }
+
+    /* Subtle star sparkle on cells */
+    .question-cell::before {
+      content: '✦';
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      font-size: 0.6rem;
+      color: rgba(255, 213, 74, 0.25);
+      animation: cell-sparkle 4s ease-in-out infinite;
+    }
+
+    @keyframes cell-sparkle {
+      0%, 100% { opacity: 0.2; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.4); }
     }
 
     .question-cell--used {
-      opacity: 0.32;
+      opacity: 0.28;
       pointer-events: none;
-      background: rgba(255,255,255,0.03);
-      border-color: rgba(255,255,255,0.05);
+      background: rgba(255,255,255,0.02);
+      border-color: rgba(255,255,255,0.04);
+    }
+
+    .question-cell--used::before {
+      display: none;
     }
 
     .question-cell__price {
       font-size: 1.75rem;
       color: var(--gold);
       font-weight: 900;
+      text-shadow: 0 0 14px rgba(255, 213, 74, 0.15);
     }
 
     .question-cell__play {
@@ -411,15 +655,16 @@
     }
 
     .board-hint strong {
-      color: var(--gold);
+      color: var(--cyan);
     }
 
+    /* ========== QUESTION MODAL ========== */
     .question-overlay {
       position: fixed;
       inset: 0;
       z-index: 20;
-      background: rgba(5, 8, 22, 0.76);
-      backdrop-filter: blur(10px);
+      background: rgba(2, 8, 16, 0.82);
+      backdrop-filter: blur(14px);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -429,11 +674,27 @@
     .question-modal {
       width: 100%;
       max-width: 860px;
-      background: linear-gradient(145deg, rgba(19,25,55,0.96), rgba(10,14,34,0.98));
-      border: 1px solid rgba(255,255,255,0.12);
+      background: linear-gradient(145deg, rgba(10, 22, 50, 0.97), rgba(5, 10, 30, 0.98));
+      border: 1px solid rgba(100, 232, 255, 0.12);
       border-radius: 28px;
-      box-shadow: 0 28px 70px rgba(0,0,0,0.45);
+      box-shadow: 0 28px 70px rgba(0,0,0,0.55), 0 0 60px rgba(100, 232, 255, 0.04);
       padding: 34px 30px 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Stars inside modal */
+    .question-modal::before {
+      content: '✦  ✧  ★  ✦  ✧';
+      position: absolute;
+      top: 12px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 0.6rem;
+      letter-spacing: 1.2em;
+      color: rgba(100, 232, 255, 0.15);
+      pointer-events: none;
     }
 
     .question-modal__top {
@@ -442,7 +703,7 @@
     }
 
     .question-modal__theme {
-      color: var(--cyan);
+      color: var(--purple);
       text-transform: uppercase;
       letter-spacing: 0.18em;
       font-size: 0.85rem;
@@ -454,6 +715,7 @@
       font-size: 3rem;
       font-weight: 900;
       margin-bottom: 16px;
+      text-shadow: 0 0 24px rgba(255, 213, 74, 0.20);
     }
 
     .question-modal__team {
@@ -461,15 +723,15 @@
       gap: 8px;
       align-items: center;
       padding: 8px 14px;
-      background: rgba(255,255,255,0.06);
+      background: rgba(100, 232, 255, 0.06);
       border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.09);
+      border: 1px solid rgba(100, 232, 255, 0.12);
       font-size: 0.92rem;
       color: var(--muted);
     }
 
     .question-modal__team strong {
-      color: #fff;
+      color: var(--cyan);
     }
 
     .question-modal__text {
@@ -485,7 +747,7 @@
       margin-bottom: 24px;
       text-align: center;
       background: rgba(39,214,122,0.08);
-      border: 1px solid rgba(39,214,122,0.25);
+      border: 1px solid rgba(39,214,122,0.22);
       color: #baf6d3;
       border-radius: 16px;
       padding: 18px 16px;
@@ -508,6 +770,7 @@
       font-size: 0.98rem;
     }
 
+    /* ========== FINAL ========== */
     .final-panel {
       text-align: center;
     }
@@ -516,7 +779,9 @@
       font-size: 2rem;
       font-weight: 900;
       margin-bottom: 10px;
-      color: var(--gold);
+      background: linear-gradient(135deg, var(--gold), var(--rocket-orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .final-subtitle {
@@ -539,13 +804,14 @@
       align-items: center;
       padding: 18px;
       border-radius: 18px;
-      background: linear-gradient(145deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      border: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.06);
     }
 
     .leaderboard-item--1 {
       border-color: rgba(255,213,74,0.42);
-      box-shadow: 0 0 0 1px rgba(255,213,74,0.18);
+      box-shadow: 0 0 0 1px rgba(255,213,74,0.18), 0 0 30px rgba(255, 213, 74, 0.08);
+      background: linear-gradient(145deg, rgba(255, 213, 74, 0.06), rgba(255, 184, 0, 0.03));
     }
 
     .leaderboard-place {
@@ -572,6 +838,28 @@
       display: none !important;
     }
 
+    /* ========== CONSTELLATION DIVIDER ========== */
+    .constellation-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 8px 0;
+      color: rgba(100, 232, 255, 0.25);
+      font-size: 0.6rem;
+      letter-spacing: 0.5em;
+      user-select: none;
+    }
+
+    .constellation-divider::before,
+    .constellation-divider::after {
+      content: '';
+      flex: 1;
+      max-width: 120px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(100, 232, 255, 0.12), transparent);
+    }
+
     @media (max-width: 900px) {
       .theme-row {
         flex-direction: column;
@@ -593,6 +881,10 @@
 
       .question-actions {
         grid-template-columns: 1fr;
+      }
+
+      .planet--mars {
+        display: none;
       }
     }
 
@@ -637,16 +929,44 @@
       .leaderboard-score {
         font-size: 1.2rem;
       }
+
+      .planet--earth {
+        width: 120px;
+        height: 120px;
+      }
+
+      .planet--saturn {
+        display: none;
+      }
     }
-    
   </style>
 
+  <!-- STAR FIELD -->
+  <div class="starfield" id="starfield"></div>
+
+  <!-- SHOOTING STARS -->
+  <div class="shooting-star"></div>
+  <div class="shooting-star"></div>
+  <div class="shooting-star"></div>
+
+  <!-- NEBULA BG -->
   <div class="page-bg"></div>
+
+  <!-- FLOATING PLANETS -->
+  <div class="planet planet--earth"></div>
+  <div class="planet planet--mars"></div>
+  <div class="planet planet--saturn"></div>
+
+  <!-- FLOATING ROCKET -->
+  <div class="rocket-float" id="rocketFloat">🚀</div>
 
   <main class="app">
     <header class="hero">
+      <div class="hero__badge">🚀 12 апреля — День космонавтики</div>
       <h1 class="hero__title">Своя Игра</h1>
       <p class="hero__uni">Княгининский университет</p>
+      <p class="hero__date">Космическое путешествие по знаниям</p>
+      <div class="constellation-divider">✦ ✧ ★ ✧ ✦</div>
     </header>
 
     <section id="teams-section" class="panel teams-panel"></section>
@@ -656,550 +976,571 @@
   </main>
 
   <script>
-    const GAME_CONFIG = {
-    title: "Своя Игра",
-    event: "День космонавтики",
-    university: "Университет",
-    rounds: [
-      {
-        name: "Раунд 1",
-        themes: [
-          {
-            name: "Гагаринский старт",
-            questions: [
-              { price: 100, question: "Назовите точную дату (день, месяц, год) первого полета человека в космос.", answer: "12 апреля 1961 года" },
-              { price: 200, question: "Как назывался космический корабль, на котором полетел Юрий Гагарин?", answer: "Восток-1" },
-              { price: 300, question: "Сколько минут длился полет Юрия Гагарина?", answer: "108 минут" },
-              { price: 400, question: "Как звучал позывной Юрия Гагарина во время его исторического полета?", answer: "Кедр" }
-            ]
-          },
-          {
-            name: "Соседи Земли",
-            questions: [
-              { price: 100, question: "Какая планета Солнечной системы самая большая?", answer: "Юпитер" },
-              { price: 200, question: "Какая планета Солнечной системы самая горячая?", answer: "Венера" },
-              { price: 300, question: "На какой планете находится гора Олимп — самый высокий вулкан в Солнечной системе?", answer: "Марс" },
-              { price: 400, question: "Какую планету астрономы в 2006 году лишили статуса «полноценной» планеты, переведя в разряд карликовых?", answer: "Плутон" }
-            ]
-          },
-          {
-            name: "Первопроходцы",
-            questions: [
-              { price: 100, question: "Как назывался первый искусственный спутник Земли, запущенный в 1957 году?", answer: "Спутник-1" },
-              { price: 200, question: "Кто первым из землян вышел в открытый космос?", answer: "Алексей Леонов" },
-              { price: 300, question: "Как звали первую женщину-космонавта?", answer: "Валентина Терешкова" },
-              { price: 400, question: "Кто был дублером Юрия Гагарина перед первым полетом?", answer: "Герман Титов" }
-            ]
-          },
-          {
-            name: "Небо над головой",
-            questions: [
-              { price: 100, question: "Как называется галактика, в которой мы живем?", answer: "Млечный Путь" },
-              { price: 200, question: "Какое небесное тело вызывает приливы и отливы на Земле?", answer: "Луна" },
-              { price: 300, question: "Как называется явление, при котором Луна полностью или частично закрывает Солнце от наблюдателя на Земле?", answer: "Солнечное затмение" },
-              { price: 400, question: "Что измеряют в световых годах?", answer: "Расстояние" }
-            ]
-          }
-        ]
-      },
-      {
-        name: "Раунд 2",
-        themes: [
-          {
-            name: "Биология и Люди",
-            questions: [
-              { price: 100, question: "Как звали собак, которые первыми совершили орбитальный полет и успешно вернулись на Землю?", answer: "Белка и Стрелка" },
-              { price: 200, question: "Какое животное стало первым живым существом, выведенным на орбиту Земли (к сожалению, не вернувшимся)?", answer: "Собака Лайка" },
-              { price: 300, question: "Кто произнес знаменитую фразу: «Это один маленький шаг для человека, но гигантский скачок для всего человечества»?", answer: "Нил Армстронг" },
-              { price: 400, question: "Кто стал первой женщиной, вышедшей в открытый космос (СССР, 1984 год)?", answer: "Светлана Савицкая" }
-            ]
-          },
-          {
-            name: "Тайны планет",
-            questions: [
-              { price: 100, question: "Из чего в основном состоят кольца Сатурна?", answer: "Из льда и пыли" },
-              { price: 200, question: "У какой планеты Солнечной системы на данный момент открыто больше всего спутников?", answer: "Сатурн" },
-              { price: 300, question: "Какая планета вращается, «лежа на боку»?", answer: "Уран" },
-              { price: 400, question: "Какая планета Солнечной системы вращается вокруг своей оси по часовой стрелке (в отличие от большинства других)?", answer: "Венера" }
-            ]
-          },
-          {
-            name: "Физика и Орбиты",
-            questions: [
-              { price: 100, question: "Сколько градусов в полной круговой орбите?", answer: "360 градусов" },
-              { price: 200, question: "Какую геометрическую фигуру описывает орбита большинства планет?", answer: "Эллипс" },
-              { price: 300, question: "Чему примерно равна первая космическая скорость для Земли?", answer: "7,9 км/с" },
-              { price: 400, question: "Почему ракеты выгоднее запускать как можно ближе к экватору и в восточном направлении?", answer: "Чтобы использовать скорость вращения Земли для придания ракете дополнительного ускорения" }
-            ]
-          },
-          {
-            name: "Звезды и Дальний космос",
-            questions: [
-              { price: 100, question: "Какого цвета самые горячие звезды во Вселенной?", answer: "Синие / Голубые" },
-              { price: 200, question: "Какая ближайшая к Земле звезда (после Солнца)?", answer: "Проксима Центавра" },
-              { price: 300, question: "Как называется ближайшая к нам гигантская спиральная галактика, которая движется навстречу Млечному Пути?", answer: "Галактика Андромеды" },
-              { price: 400, question: "Что является границей черной дыры, за пределы которой не может вырваться даже свет?", answer: "Горизонт событий" }
-            ]
-          }
-        ]
-      },
-      {
-        name: "Раунд 3",
-        themes: [
-          {
-            name: "Творцы и Законы",
-            questions: [
-              { price: 100, question: "Кто был Главным конструктором советской ракетно-космической программы в годы первых космических триумфов?", answer: "Сергей Павлович Королёв" },
-              { price: 200, question: "Кто является основоположником теоретической космонавтики и автором формулы, определяющей скорость ракеты?", answer: "Константин Эдуардович Циолковский" },
-              { price: 300, question: "Кто открыл три закона движения планет вокруг Солнца?", answer: "Иоганн Кеплер" },
-              { price: 400, question: "Согласно общей теории относительности Эйнштейна, что происходит со временем вблизи сверхмассивных объектов?", answer: "Время замедляется" }
-            ]
-          },
-          {
-            name: "Аппараты и Станции",
-            questions: [
-              { price: 100, question: "Как называлась первая в мире орбитальная космическая станция, запущенная СССР в 1971 году?", answer: "Салют-1" },
-              { price: 200, question: "Назовите советскую станцию, которая стала первой в мире многомодульной орбитальной станцией (работала с 1986 по 2001 год).", answer: "Станция «Мир»" },
-              { price: 300, question: "Какая советская автоматическая станция первой в мире сфотографировала обратную сторону Луны?", answer: "Луна-3" },
-              { price: 400, question: "Какой космический аппарат стал первым искусственным объектом, покинувшим пределы Солнечной системы?", answer: "Вояджер-1" }
-            ]
-          },
-          {
-            name: "Технологии и Термины",
-            questions: [
-              { price: 100, question: "Как называется точка орбиты спутника Земли, наиболее близкая к центру нашей планеты?", answer: "Перигей" },
-              { price: 200, question: "Как называется точка орбиты спутника Земли, наиболее удаленная от центра нашей планеты?", answer: "Апогей" },
-              { price: 300, question: "Какой газ чаще всего используется в качестве окислителя в современных ракетах-носителях (жидкостных ракетных двигателях)?", answer: "Жидкий кислород" },
-              { price: 400, question: "Как называется знаменитый космический телескоп, запущенный в 1990 году, который сделал тысячи снимков глубокого космоса?", answer: "Телескоп «Хаббл»" }
-            ]
-          },
-          {
-            name: "Разное и История",
-            questions: [
-              { price: 100, question: "Какой шоколадный батончик носит то же имя, что и планета, названная в честь древнеримского бога войны?", answer: "Mars (Марс)" },
-              { price: 200, question: "Как назывался советский орбитальный корабль-ракетоплан многоразового использования, совершивший свой единственный полет в 1988 году?", answer: "Буран" },
-              { price: 300, question: "Какой американский шаттл потерпел катастрофу при старте 28 января 1986 года?", answer: "Челленджер" },
-              { price: 400, question: "Кто до сих пор носит статус самого молодого человека, побывавшего в космосе (на момент полета)?", answer: "Герман Титов" }
-            ]
-          }
-        ]
+    // ===== GENERATE STAR FIELD =====
+    (function generateStars() {
+      const starfield = document.getElementById('starfield');
+      const count = 160;
+      for (let i = 0; i < count; i++) {
+        const star = document.createElement('div');
+        star.classList.add('star');
+        const size = Math.random() * 2.5 + 0.5;
+        star.style.width = size + 'px';
+        star.style.height = size + 'px';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.setProperty('--dur', (Math.random() * 4 + 2) + 's');
+        star.style.setProperty('--min-op', (Math.random() * 0.3 + 0.1).toFixed(2));
+        star.style.animationDelay = (Math.random() * 5) + 's';
+        starfield.appendChild(star);
       }
-    ]
-  };
+    })();
 
+    const GAME_CONFIG = {
+      title: "Своя Игра",
+      event: "День космонавтики",
+      university: "Университет",
+      rounds: [
+        {
+          name: "Раунд 1 — Ближний космос",
+          themes: [
+            {
+              name: "Гагаринский старт",
+              questions: [
+                { price: 100, question: "Назовите точную дату (день, месяц, год) первого полета человека в космос.", answer: "12 апреля 1961 года" },
+                { price: 200, question: "Как назывался космический корабль, на котором полетел Юрий Гагарин?", answer: "Восток-1" },
+                { price: 300, question: "Сколько минут длился полет Юрия Гагарина?", answer: "108 минут" },
+                { price: 400, question: "Как звучал позывной Юрия Гагарина во время его исторического полета?", answer: "Кедр" }
+              ]
+            },
+            {
+              name: "Соседи Земли",
+              questions: [
+                { price: 100, question: "Какая планета Солнечной системы самая большая?", answer: "Юпитер" },
+                { price: 200, question: "Какая планета Солнечной системы самая горячая?", answer: "Венера" },
+                { price: 300, question: "На какой планете находится гора Олимп — самый высокий вулкан в Солнечной системе?", answer: "Марс" },
+                { price: 400, question: "Какую планету астрономы в 2006 году лишили статуса «полноценной» планеты, переведя в разряд карликовых?", answer: "Плутон" }
+              ]
+            },
+            {
+              name: "Первопроходцы",
+              questions: [
+                { price: 100, question: "Как назывался первый искусственный спутник Земли, запущенный в 1957 году?", answer: "Спутник-1" },
+                { price: 200, question: "Кто первым из землян вышел в открытый космос?", answer: "Алексей Леонов" },
+                { price: 300, question: "Как звали первую женщину-космонавта?", answer: "Валентина Терешкова" },
+                { price: 400, question: "Кто был дублером Юрия Гагарина перед первым полетом?", answer: "Герман Титов" }
+              ]
+            },
+            {
+              name: "Небо над головой",
+              questions: [
+                { price: 100, question: "Как называется галактика, в которой мы живем?", answer: "Млечный Путь" },
+                { price: 200, question: "Какое небесное тело вызывает приливы и отливы на Земле?", answer: "Луна" },
+                { price: 300, question: "Как называется явление, при котором Луна полностью или частично закрывает Солнце от наблюдателя на Земле?", answer: "Солнечное затмение" },
+                { price: 400, question: "Что измеряют в световых годах?", answer: "Расстояние" }
+              ]
+            }
+          ]
+        },
+        {
+          name: "Раунд 2 — Открытый космос",
+          themes: [
+            {
+              name: "Биология и Люди",
+              questions: [
+                { price: 100, question: "Как звали собак, которые первыми совершили орбитальный полет и успешно вернулись на Землю?", answer: "Белка и Стрелка" },
+                { price: 200, question: "Какое животное стало первым живым существом, выведенным на орбиту Земли (к сожалению, не вернувшимся)?", answer: "Собака Лайка" },
+                { price: 300, question: "Кто произнес знаменитую фразу: «Это один маленький шаг для человека, но гигантский скачок для всего человечества»?", answer: "Нил Армстронг" },
+                { price: 400, question: "Кто стал первой женщиной, вышедшей в открытый космос (СССР, 1984 год)?", answer: "Светлана Савицкая" }
+              ]
+            },
+            {
+              name: "Тайны планет",
+              questions: [
+                { price: 100, question: "Из чего в основном состоят кольца Сатурна?", answer: "Из льда и пыли" },
+                { price: 200, question: "У какой планеты Солнечной системы на данный момент открыто больше всего спутников?", answer: "Сатурн" },
+                { price: 300, question: "Какая планета вращается, «лежа на боку»?", answer: "Уран" },
+                { price: 400, question: "Какая планета Солнечной системы вращается вокруг своей оси по часовой стрелке (в отличие от большинства других)?", answer: "Венера" }
+              ]
+            },
+            {
+              name: "Физика и Орбиты",
+              questions: [
+                { price: 100, question: "Сколько градусов в полной круговой орбите?", answer: "360 градусов" },
+                { price: 200, question: "Какую геометрическую фигуру описывает орбита большинства планет?", answer: "Эллипс" },
+                { price: 300, question: "Чему примерно равна первая космическая скорость для Земли?", answer: "7,9 км/с" },
+                { price: 400, question: "Почему ракеты выгоднее запускать как можно ближе к экватору и в восточном направлении?", answer: "Чтобы использовать скорость вращения Земли для придания ракете дополнительного ускорения" }
+              ]
+            },
+            {
+              name: "Звезды и Дальний космос",
+              questions: [
+                { price: 100, question: "Какого цвета самые горячие звезды во Вселенной?", answer: "Синие / Голубые" },
+                { price: 200, question: "Какая ближайшая к Земле звезда (после Солнца)?", answer: "Проксима Центавра" },
+                { price: 300, question: "Как называется ближайшая к нам гигантская спиральная галактика, которая движется навстречу Млечному Пути?", answer: "Галактика Андромеды" },
+                { price: 400, question: "Что является границей черной дыры, за пределы которой не может вырваться даже свет?", answer: "Горизонт событий" }
+              ]
+            }
+          ]
+        },
+        {
+          name: "Раунд 3 — Дальний космос",
+          themes: [
+            {
+              name: "Творцы и Законы",
+              questions: [
+                { price: 100, question: "Кто был Главным конструктором советской ракетно-космической программы в годы первых космических триумфов?", answer: "Сергей Павлович Королёв" },
+                { price: 200, question: "Кто является основоположником теоретической космонавтики и автором формулы, определяющей скорость ракеты?", answer: "Константин Эдуардович Циолковский" },
+                { price: 300, question: "Кто открыл три закона движения планет вокруг Солнца?", answer: "Иоганн Кеплер" },
+                { price: 400, question: "Согласно общей теории относительности Эйнштейна, что происходит со временем вблизи сверхмассивных объектов?", answer: "Время замедляется" }
+              ]
+            },
+            {
+              name: "Аппараты и Станции",
+              questions: [
+                { price: 100, question: "Как называлась первая в мире орбитальная космическая станция, запущенная СССР в 1971 году?", answer: "Салют-1" },
+                { price: 200, question: "Назовите советскую станцию, которая стала первой в мире многомодульной орбитальной станцией (работала с 1986 по 2001 год).", answer: "Станция «Мир»" },
+                { price: 300, question: "Какая советская автоматическая станция первой в мире сфотографировала обратную сторону Луны?", answer: "Луна-3" },
+                { price: 400, question: "Какой космический аппарат стал первым искусственным объектом, покинувшим пределы Солнечной системы?", answer: "Вояджер-1" }
+              ]
+            },
+            {
+              name: "Технологии и Термины",
+              questions: [
+                { price: 100, question: "Как называется точка орбиты спутника Земли, наиболее близкая к центру нашей планеты?", answer: "Перигей" },
+                { price: 200, question: "Как называется точка орбиты спутника Земли, наиболее удаленная от центра нашей планеты?", answer: "Апогей" },
+                { price: 300, question: "Какой газ чаще всего используется в качестве окислителя в современных ракетах-носителях (жидкостных ракетных двигателях)?", answer: "Жидкий кислород" },
+                { price: 400, question: "Как называется знаменитый космический телескоп, запущенный в 1990 году, который сделал тысячи снимков глубокого космоса?", answer: "Телескоп «Хаббл»" }
+              ]
+            },
+            {
+              name: "Разное и История",
+              questions: [
+                { price: 100, question: "Какой шоколадный батончик носит то же имя, что и планета, названная в честь древнеримского бога войны?", answer: "Mars (Марс)" },
+                { price: 200, question: "Как назывался советский орбитальный корабль-ракетоплан многоразового использования, совершивший свой единственный полет в 1988 году?", answer: "Буран" },
+                { price: 300, question: "Какой американский шаттл потерпел катастрофу при старте 28 января 1986 года?", answer: "Челленджер" },
+                { price: 400, question: "Кто до сих пор носит статус самого молодого человека, побывавшего в космосе (на момент полета)?", answer: "Герман Титов" }
+              ]
+            }
+          ]
+        }
+      ]
+    };
   </script>
+
   <script>
     const state = {
-    teams: [],
-    selectedTeamId: null,
-    currentRoundIndex: 0,
-    roundOpen: true,
-    activeQuestion: null,
-    usedQuestions: new Set(),
-    gameFinished: false,
-    answerShown: false
-  };
-
-  const teamsSection = document.getElementById("teams-section");
-  const boardSection = document.getElementById("board-section");
-  const questionOverlay = document.getElementById("question-overlay");
-  const finalSection = document.getElementById("final-section");
-
-  function escapeHtml(value) {
-    return String(value)
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;");
-  }
-
-  function getQuestionKey(roundIndex, themeIndex, questionIndex) {
-    return `${roundIndex}-${themeIndex}-${questionIndex}`;
-  }
-
-  function isQuestionUsed(roundIndex, themeIndex, questionIndex) {
-    return state.usedQuestions.has(getQuestionKey(roundIndex, themeIndex, questionIndex));
-  }
-
-  function isRoundCompleted(roundIndex) {
-    const round = GAME_CONFIG.rounds[roundIndex];
-    for (let themeIndex = 0; themeIndex < round.themes.length; themeIndex += 1) {
-      for (let questionIndex = 0; questionIndex < round.themes[themeIndex].questions.length; questionIndex += 1) {
-        if (!isQuestionUsed(roundIndex, themeIndex, questionIndex)) {
-          return false;
-        }
-      }
-    }
-    return true;
-  }
-
-  function getCurrentRound() {
-    return GAME_CONFIG.rounds[state.currentRoundIndex];
-  }
-
-  function getRemainingQuestionsInRound(roundIndex) {
-    const round = GAME_CONFIG.rounds[roundIndex];
-    let total = 0;
-    round.themes.forEach((theme, themeIndex) => {
-      theme.questions.forEach((_, questionIndex) => {
-        if (!isQuestionUsed(roundIndex, themeIndex, questionIndex)) {
-          total += 1;
-        }
-      });
-    });
-    return total;
-  }
-
-  function sortTeamsByScore() {
-    return [...state.teams].sort((a, b) => b.score - a.score);
-  }
-
-  function addTeam() {
-    const input = document.getElementById("team-name-input");
-    if (!input) return;
-
-    const name = input.value.trim();
-    if (!name) return;
-
-    state.teams.push({
-      id: Date.now() + Math.random(),
-      name,
-      score: 0
-    });
-
-    if (state.selectedTeamId === null) {
-      state.selectedTeamId = state.teams[0].id;
-    }
-
-    input.value = "";
-    render();
-  }
-
-  function removeTeam(teamId) {
-    const team = state.teams.find((item) => item.id === teamId);
-    if (!team) return;
-
-    const confirmed = window.confirm(`Удалить команду «${team.name}»?`);
-    if (!confirmed) return;
-
-    state.teams = state.teams.filter((item) => item.id !== teamId);
-
-    if (state.selectedTeamId === teamId) {
-      state.selectedTeamId = state.teams.length ? state.teams[0].id : null;
-    }
-
-    render();
-  }
-
-  function changeTeamScore(teamId, amount) {
-    const team = state.teams.find((item) => item.id === teamId);
-    if (!team) return;
-    team.score += amount;
-    renderTeams();
-  }
-
-  function selectTeam(teamId) {
-    state.selectedTeamId = teamId;
-    renderTeams();
-    renderBoard();
-  }
-
-  function openQuestion(roundIndex, themeIndex, questionIndex) {
-    if (state.gameFinished) return;
-    if (state.selectedTeamId === null) {
-      alert("Сначала выберите команду, которая отвечает.");
-      return;
-    }
-
-    const key = getQuestionKey(roundIndex, themeIndex, questionIndex);
-    if (state.usedQuestions.has(key)) return;
-
-    const round = GAME_CONFIG.rounds[roundIndex];
-    const theme = round.themes[themeIndex];
-    const question = theme.questions[questionIndex];
-    const team = state.teams.find((item) => item.id === state.selectedTeamId);
-
-    state.activeQuestion = {
-      roundIndex,
-      themeIndex,
-      questionIndex,
-      question,
-      themeName: theme.name,
-      teamId: team ? team.id : null
+      teams: [],
+      selectedTeamId: null,
+      currentRoundIndex: 0,
+      roundOpen: true,
+      activeQuestion: null,
+      usedQuestions: new Set(),
+      gameFinished: false,
+      answerShown: false
     };
 
-    state.answerShown = false;
-    questionOverlay.classList.remove("hidden");
-    renderQuestionModal();
-  }
+    const teamsSection = document.getElementById("teams-section");
+    const boardSection = document.getElementById("board-section");
+    const questionOverlay = document.getElementById("question-overlay");
+    const finalSection = document.getElementById("final-section");
 
-  function closeQuestion() {
-    state.activeQuestion = null;
-    state.answerShown = false;
-    questionOverlay.classList.add("hidden");
-    questionOverlay.innerHTML = "";
-  }
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
 
-  function showAnswer() {
-    state.answerShown = true;
-    renderQuestionModal();
-  }
+    function getQuestionKey(roundIndex, themeIndex, questionIndex) {
+      return `${roundIndex}-${themeIndex}-${questionIndex}`;
+    }
 
-  function renderQuestionModal() {
-    if (!state.activeQuestion) return;
+    function isQuestionUsed(roundIndex, themeIndex, questionIndex) {
+      return state.usedQuestions.has(getQuestionKey(roundIndex, themeIndex, questionIndex));
+    }
 
-    const activeTeam = state.teams.find((item) => item.id === state.activeQuestion.teamId);
-    const { question, themeName } = state.activeQuestion;
+    function isRoundCompleted(roundIndex) {
+      const round = GAME_CONFIG.rounds[roundIndex];
+      for (let themeIndex = 0; themeIndex < round.themes.length; themeIndex += 1) {
+        for (let questionIndex = 0; questionIndex < round.themes[themeIndex].questions.length; questionIndex += 1) {
+          if (!isQuestionUsed(roundIndex, themeIndex, questionIndex)) {
+            return false;
+          }
+        }
+      }
+      return true;
+    }
 
-    questionOverlay.innerHTML = `
-      <div class="question-modal">
-        <div class="question-modal__top">
-          <div class="question-modal__theme">${escapeHtml(themeName)}</div>
-          <div class="question-modal__price">${question.price}</div>
-          <div class="question-modal__team">
-            <span>Отвечает:</span>
-            <strong>${activeTeam ? escapeHtml(activeTeam.name) : "Команда не выбрана"}</strong>
+    function getCurrentRound() {
+      return GAME_CONFIG.rounds[state.currentRoundIndex];
+    }
+
+    function getRemainingQuestionsInRound(roundIndex) {
+      const round = GAME_CONFIG.rounds[roundIndex];
+      let total = 0;
+      round.themes.forEach((theme, themeIndex) => {
+        theme.questions.forEach((_, questionIndex) => {
+          if (!isQuestionUsed(roundIndex, themeIndex, questionIndex)) {
+            total += 1;
+          }
+        });
+      });
+      return total;
+    }
+
+    function sortTeamsByScore() {
+      return [...state.teams].sort((a, b) => b.score - a.score);
+    }
+
+    function addTeam() {
+      const input = document.getElementById("team-name-input");
+      if (!input) return;
+
+      const name = input.value.trim();
+      if (!name) return;
+
+      state.teams.push({
+        id: Date.now() + Math.random(),
+        name,
+        score: 0
+      });
+
+      if (state.selectedTeamId === null) {
+        state.selectedTeamId = state.teams[0].id;
+      }
+
+      input.value = "";
+      render();
+    }
+
+    function removeTeam(teamId) {
+      const team = state.teams.find((item) => item.id === teamId);
+      if (!team) return;
+
+      const confirmed = window.confirm(`Удалить команду «${team.name}»?`);
+      if (!confirmed) return;
+
+      state.teams = state.teams.filter((item) => item.id !== teamId);
+
+      if (state.selectedTeamId === teamId) {
+        state.selectedTeamId = state.teams.length ? state.teams[0].id : null;
+      }
+
+      render();
+    }
+
+    function changeTeamScore(teamId, amount) {
+      const team = state.teams.find((item) => item.id === teamId);
+      if (!team) return;
+      team.score += amount;
+      renderTeams();
+    }
+
+    function selectTeam(teamId) {
+      state.selectedTeamId = teamId;
+      renderTeams();
+      renderBoard();
+    }
+
+    function openQuestion(roundIndex, themeIndex, questionIndex) {
+      if (state.gameFinished) return;
+      if (state.selectedTeamId === null) {
+        alert("Сначала выберите команду, которая отвечает.");
+        return;
+      }
+
+      const key = getQuestionKey(roundIndex, themeIndex, questionIndex);
+      if (state.usedQuestions.has(key)) return;
+
+      const round = GAME_CONFIG.rounds[roundIndex];
+      const theme = round.themes[themeIndex];
+      const question = theme.questions[questionIndex];
+      const team = state.teams.find((item) => item.id === state.selectedTeamId);
+
+      state.activeQuestion = {
+        roundIndex,
+        themeIndex,
+        questionIndex,
+        question,
+        themeName: theme.name,
+        teamId: team ? team.id : null
+      };
+
+      state.answerShown = false;
+      questionOverlay.classList.remove("hidden");
+      renderQuestionModal();
+    }
+
+    function closeQuestion() {
+      state.activeQuestion = null;
+      state.answerShown = false;
+      questionOverlay.classList.add("hidden");
+      questionOverlay.innerHTML = "";
+    }
+
+    function showAnswer() {
+      state.answerShown = true;
+      renderQuestionModal();
+    }
+
+    function renderQuestionModal() {
+      if (!state.activeQuestion) return;
+
+      const activeTeam = state.teams.find((item) => item.id === state.activeQuestion.teamId);
+      const { question, themeName } = state.activeQuestion;
+
+      questionOverlay.innerHTML = `
+        <div class="question-modal">
+          <div class="question-modal__top">
+            <div class="question-modal__theme">🌌 ${escapeHtml(themeName)}</div>
+            <div class="question-modal__price">${question.price}</div>
+            <div class="question-modal__team">
+              <span>🧑‍🚀 Отвечает:</span>
+              <strong>${activeTeam ? escapeHtml(activeTeam.name) : "Команда не выбрана"}</strong>
+            </div>
+          </div>
+
+          <div class="question-modal__text">${escapeHtml(question.question)}</div>
+
+          <div class="answer-box ${state.answerShown ? "visible" : ""}">
+            ✅ ${escapeHtml(question.answer)}
+          </div>
+
+          <div class="question-actions">
+            ${
+              state.answerShown
+                ? `
+                  <button class="btn btn--green" onclick="handleCorrectAnswer()">✓ Верно</button>
+                  <button class="btn btn--red" onclick="handleWrongAnswer()">✗ Неверно</button>
+                `
+                : `
+                  <button class="btn btn--purple" onclick="showAnswer()">🔭 Показать ответ</button>
+                  <button class="btn btn--soft" onclick="closeQuestion()">← Вернуться назад</button>
+                `
+            }
+          </div>
+        </div>
+      `;
+    }
+
+    function markQuestionAsUsed() {
+      const { roundIndex, themeIndex, questionIndex } = state.activeQuestion;
+      state.usedQuestions.add(getQuestionKey(roundIndex, themeIndex, questionIndex));
+    }
+
+    function handleCorrectAnswer() {
+      if (!state.activeQuestion) return;
+
+      const team = state.teams.find((item) => item.id === state.activeQuestion.teamId);
+      if (team) {
+        team.score += state.activeQuestion.question.price;
+      }
+
+      markQuestionAsUsed();
+      proceedAfterAnswer();
+    }
+
+    function handleWrongAnswer() {
+      if (!state.activeQuestion) return;
+
+      const team = state.teams.find((item) => item.id === state.activeQuestion.teamId);
+      if (team) {
+        team.score -= state.activeQuestion.question.price;
+      }
+
+      markQuestionAsUsed();
+      proceedAfterAnswer();
+    }
+
+    function proceedAfterAnswer() {
+      const answeredRoundIndex = state.activeQuestion.roundIndex;
+      closeQuestion();
+
+      if (isRoundCompleted(answeredRoundIndex)) {
+        if (answeredRoundIndex < GAME_CONFIG.rounds.length - 1) {
+          state.currentRoundIndex = answeredRoundIndex + 1;
+          state.roundOpen = true;
+        } else {
+          finishGame();
+          return;
+        }
+      }
+
+      render();
+    }
+
+    function finishGame() {
+      state.gameFinished = true;
+      state.roundOpen = false;
+      teamsSection.classList.add("hidden");
+      boardSection.classList.add("hidden");
+      renderFinalLeaderboard();
+      finalSection.classList.remove("hidden");
+    }
+
+    function renderTeams() {
+      if (state.gameFinished) return;
+
+      teamsSection.innerHTML = `
+        <div class="team-topbar">
+          <div>
+            <h2 class="section-title">
+              <span class="section-title__icon">🧑‍🚀</span>
+              Экипажи
+            </h2>
+          </div>
+
+          <div class="team-add">
+            <input
+              id="team-name-input"
+              type="text"
+              placeholder="Название экипажа"
+              onkeydown="if(event.key === 'Enter') addTeam()"
+            />
+            <button class="btn btn--main" onclick="addTeam()">🚀 Добавить экипаж</button>
           </div>
         </div>
 
-        <div class="question-modal__text">${escapeHtml(question.question)}</div>
+        ${
+          state.teams.length === 0
+            ? `<div class="empty-state">Добавьте экипажи и выберите, кто отвечает. ✦</div>`
+            : `
+              <div class="teams-grid">
+                ${state.teams.map((team) => `
+                  <div class="team-card ${state.selectedTeamId === team.id ? "active" : ""}">
+                    <div class="team-card__name">🛸 ${escapeHtml(team.name)}</div>
+                    <div class="team-card__score">${team.score}</div>
 
-        <div class="answer-box ${state.answerShown ? "visible" : ""}">
-          ${escapeHtml(question.answer)}
-        </div>
-
-        <div class="question-actions">
-          ${
-            state.answerShown
-              ? `
-                <button class="btn btn--green" onclick="handleCorrectAnswer()">Верно</button>
-                <button class="btn btn--red" onclick="handleWrongAnswer()">Неверно</button>
-              `
-              : `
-                <button class="btn btn--purple" onclick="showAnswer()">Показать ответ</button>
-                <button class="btn btn--soft" onclick="closeQuestion()">Вернуться назад</button>
-              `
-          }
-        </div>
-      </div>
-    `;
-  }
-
-  function markQuestionAsUsed() {
-    const { roundIndex, themeIndex, questionIndex } = state.activeQuestion;
-    state.usedQuestions.add(getQuestionKey(roundIndex, themeIndex, questionIndex));
-  }
-
-  function handleCorrectAnswer() {
-    if (!state.activeQuestion) return;
-
-    const team = state.teams.find((item) => item.id === state.activeQuestion.teamId);
-    if (team) {
-      team.score += state.activeQuestion.question.price;
-    }
-
-    markQuestionAsUsed();
-    proceedAfterAnswer();
-  }
-
-  function handleWrongAnswer() {
-    if (!state.activeQuestion) return;
-
-    const team = state.teams.find((item) => item.id === state.activeQuestion.teamId);
-    if (team) {
-      team.score -= state.activeQuestion.question.price;
-    }
-
-    markQuestionAsUsed();
-    proceedAfterAnswer();
-  }
-
-  function proceedAfterAnswer() {
-    const answeredRoundIndex = state.activeQuestion.roundIndex;
-    closeQuestion();
-
-    if (isRoundCompleted(answeredRoundIndex)) {
-      if (answeredRoundIndex < GAME_CONFIG.rounds.length - 1) {
-        state.currentRoundIndex = answeredRoundIndex + 1;
-        state.roundOpen = true;
-      } else {
-        finishGame();
-        return;
-      }
-    }
-
-    render();
-  }
-
-  function finishGame() {
-    state.gameFinished = true;
-    state.roundOpen = false;
-    teamsSection.classList.add("hidden");
-    boardSection.classList.add("hidden");
-    renderFinalLeaderboard();
-    finalSection.classList.remove("hidden");
-  }
-
-  function renderTeams() {
-    if (state.gameFinished) return;
-
-    teamsSection.innerHTML = `
-      <div class="team-topbar">
-        <div>
-          <h2 class="section-title">
-            <span class="section-title__icon">👥</span>
-            Команды
-          </h2>
-        </div>
-
-        <div class="team-add">
-          <input
-            id="team-name-input"
-            type="text"
-            placeholder="Название команды"
-            onkeydown="if(event.key === 'Enter') addTeam()"
-          />
-          <button class="btn btn--main" onclick="addTeam()">Добавить команду</button>
-        </div>
-      </div>
-
-      ${
-        state.teams.length === 0
-          ? `<div class="empty-state">Добавьте команды и выберите, кто отвечает.</div>`
-          : `
-            <div class="teams-grid">
-              ${state.teams.map((team) => `
-                <div class="team-card ${state.selectedTeamId === team.id ? "active" : ""}">
-                  <div class="team-card__name">${escapeHtml(team.name)}</div>
-                  <div class="team-card__score">${team.score}</div>
-
-                  <div class="team-card__actions">
-                    <button class="btn btn--red" onclick="changeTeamScore(${team.id}, -100)">−100</button>
-                    <button class="btn btn--green" onclick="changeTeamScore(${team.id}, 100)">+100</button>
-                  </div>
-
-                  <div class="team-card__bottom">
-                    <button class="btn btn--gold team-select-btn" onclick="selectTeam(${team.id})">
-                      ${state.selectedTeamId === team.id ? "Отвечает сейчас" : "Выбрать отвечающей"}
-                    </button>
-                    <button class="team-remove-btn" onclick="removeTeam(${team.id})">удалить</button>
-                  </div>
-                </div>
-              `).join("")}
-            </div>
-          `
-      }
-    `;
-  }
-
-  function renderBoard() {
-    if (state.gameFinished) return;
-
-    const round = getCurrentRound();
-    const remaining = getRemainingQuestionsInRound(state.currentRoundIndex);
-    const selectedTeam = state.teams.find((item) => item.id === state.selectedTeamId);
-
-    boardSection.innerHTML = `
-      <div class="round-status">
-        <div class="round-status__left">
-          <div class="round-status__label">Активный этап</div>
-          <div class="round-status__title">${escapeHtml(round.name)}</div>
-        </div>
-        <div class="round-status__right">
-          <div class="round-status__questions">Осталось вопросов: ${remaining}</div>
-          <button class="btn btn--soft" onclick="toggleCurrentRound()">
-            ${state.roundOpen ? "Скрыть" : "Раскрыть"}
-          </button>
-        </div>
-      </div>
-
-      ${
-        state.roundOpen
-          ? `
-            <div class="round-accordion">
-              <div class="round-accordion__body">
-                <div class="game-board">
-                  ${round.themes.map((theme, themeIndex) => `
-                    <div class="theme-row">
-                      <div class="theme-title">${escapeHtml(theme.name)}</div>
-                      <div class="theme-cells">
-                        ${theme.questions.map((question, questionIndex) => {
-                          const used = isQuestionUsed(state.currentRoundIndex, themeIndex, questionIndex);
-                          return `
-                            <div class="question-cell ${used ? "question-cell--used" : ""}">
-                              <div class="question-cell__price">${question.price}</div>
-                              <button
-                                class="btn btn--gold question-cell__play"
-                                ${used ? "disabled" : ""}
-                                onclick="openQuestion(${state.currentRoundIndex}, ${themeIndex}, ${questionIndex})"
-                              >
-                                Играть
-                              </button>
-                            </div>
-                          `;
-                        }).join("")}
-                      </div>
+                    <div class="team-card__actions">
+                      <button class="btn btn--red" onclick="changeTeamScore(${team.id}, -100)">−100</button>
+                      <button class="btn btn--green" onclick="changeTeamScore(${team.id}, 100)">+100</button>
                     </div>
-                  `).join("")}
+
+                    <div class="team-card__bottom">
+                      <button class="btn btn--gold team-select-btn" onclick="selectTeam(${team.id})">
+                        ${state.selectedTeamId === team.id ? "⭐ Отвечает сейчас" : "Выбрать"}
+                      </button>
+                      <button class="team-remove-btn" onclick="removeTeam(${team.id})">удалить</button>
+                    </div>
+                  </div>
+                `).join("")}
+              </div>
+            `
+        }
+      `;
+    }
+
+    function renderBoard() {
+      if (state.gameFinished) return;
+
+      const round = getCurrentRound();
+      const remaining = getRemainingQuestionsInRound(state.currentRoundIndex);
+      const selectedTeam = state.teams.find((item) => item.id === state.selectedTeamId);
+
+      boardSection.innerHTML = `
+        <div class="round-status">
+          <div class="round-status__left">
+            <div class="round-status__label">🌠 Активный этап</div>
+            <div class="round-status__title">${escapeHtml(round.name)}</div>
+          </div>
+          <div class="round-status__right">
+            <div class="round-status__questions">Осталось вопросов: ${remaining}</div>
+            <button class="btn btn--soft" onclick="toggleCurrentRound()">
+              ${state.roundOpen ? "Скрыть" : "Раскрыть"}
+            </button>
+          </div>
+        </div>
+
+        ${
+          state.roundOpen
+            ? `
+              <div class="round-accordion">
+                <div class="round-accordion__body">
+                  <div class="game-board">
+                    ${round.themes.map((theme, themeIndex) => `
+                      <div class="theme-row">
+                        <div class="theme-title">🪐 ${escapeHtml(theme.name)}</div>
+                        <div class="theme-cells">
+                          ${theme.questions.map((question, questionIndex) => {
+                            const used = isQuestionUsed(state.currentRoundIndex, themeIndex, questionIndex);
+                            return `
+                              <div class="question-cell ${used ? "question-cell--used" : ""}">
+                                <div class="question-cell__price">${question.price}</div>
+                                <button
+                                  class="btn btn--gold question-cell__play"
+                                  ${used ? "disabled" : ""}
+                                  onclick="openQuestion(${state.currentRoundIndex}, ${themeIndex}, ${questionIndex})"
+                                >
+                                  Играть
+                                </button>
+                              </div>
+                            `;
+                          }).join("")}
+                        </div>
+                      </div>
+                    `).join("")}
+                  </div>
                 </div>
               </div>
-            </div>
-          `
-          : ""
-      }
-
-      <div class="board-hint">
-        ${
-          selectedTeam
-            ? `Сейчас отвечает: <strong>${escapeHtml(selectedTeam.name)}</strong>`
-            : `Сначала выберите <strong>отвечающую команду</strong> сверху`
+            `
+            : ""
         }
-      </div>
-    `;
-  }
 
-  function toggleCurrentRound() {
-    state.roundOpen = !state.roundOpen;
-    renderBoard();
-  }
-
-  function renderFinalLeaderboard() {
-    const sortedTeams = sortTeamsByScore();
-
-    finalSection.innerHTML = `
-      <div class="final-title">Игра завершена</div>
-      <div class="final-subtitle">Итоговая таблица результатов</div>
-
-      ${
-        sortedTeams.length === 0
-          ? `<div class="empty-state">Команды не были добавлены.</div>`
-          : `
-            <div class="leaderboard">
-              ${sortedTeams.map((team, index) => `
-                <div class="leaderboard-item ${index === 0 ? "leaderboard-item--1" : ""}">
-                  <div class="leaderboard-place">${index + 1}</div>
-                  <div class="leaderboard-name">${escapeHtml(team.name)}</div>
-                  <div class="leaderboard-score">${team.score}</div>
-                </div>
-              `).join("")}
-            </div>
-          `
-      }
-    `;
-  }
-
-  function render() {
-    renderTeams();
-    renderBoard();
-  }
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && !questionOverlay.classList.contains("hidden")) {
-      closeQuestion();
+        <div class="board-hint">
+          ${
+            selectedTeam
+              ? `🧑‍🚀 Сейчас отвечает: <strong>${escapeHtml(selectedTeam.name)}</strong>`
+              : `Сначала выберите <strong>отвечающий экипаж</strong> сверху`
+          }
+        </div>
+      `;
     }
-  });
 
-  render();
+    function toggleCurrentRound() {
+      state.roundOpen = !state.roundOpen;
+      renderBoard();
+    }
+
+    function renderFinalLeaderboard() {
+      const sortedTeams = sortTeamsByScore();
+      const medals = ['🥇', '🥈', '🥉'];
+
+      finalSection.innerHTML = `
+        <div style="font-size: 3rem; margin-bottom: 10px;">🏆</div>
+        <div class="final-title">Миссия завершена!</div>
+        <div class="final-subtitle">Итоговая таблица результатов космической экспедиции</div>
+
+        ${
+          sortedTeams.length === 0
+            ? `<div class="empty-state">Экипажи не были добавлены.</div>`
+            : `
+              <div class="leaderboard">
+                ${sortedTeams.map((team, index) => `
+                  <div class="leaderboard-item ${index === 0 ? "leaderboard-item--1" : ""}">
+                    <div class="leaderboard-place">${medals[index] || (index + 1)}</div>
+                    <div class="leaderboard-name">${escapeHtml(team.name)}</div>
+                    <div class="leaderboard-score">${team.score}</div>
+                  </div>
+                `).join("")}
+              </div>
+            `
+        }
+      `;
+    }
+
+    function render() {
+      renderTeams();
+      renderBoard();
+    }
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !questionOverlay.classList.contains("hidden")) {
+        closeQuestion();
+      }
+    });
+
+    render();
   </script>
 </body>
 </html>
