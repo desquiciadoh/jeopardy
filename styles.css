@@ -658,6 +658,24 @@ body {
   background: linear-gradient(to right, transparent, rgba(255, 213, 74, 0.10), transparent);
 }
 
+/* Добавляем эффект свечения для активных элементов */
+.question-cell:hover:not(.question-cell--used),
+.btn:hover:not(:disabled) {
+  filter: drop-shadow(0 0 12px rgba(255, 213, 74, 0.3));
+}
+
+/* Улучшаем читаемость текста вопросов */
+
+/* Добавляем пульсацию для кнопки запуска */
+@keyframes launch-pulse {
+  0%, 100% { box-shadow: 0 6px 35px rgba(255, 213, 74, 0.25); }
+  50% { box-shadow: 0 6px 50px rgba(255, 213, 74, 0.45); }
+}
+
+.splash-launch {
+  animation: splash-in 1s ease 1s both, launch-pulse 2s ease-in-out infinite 1s;
+}
+
 .panel {
   background: var(--card);
   border: 1px solid var(--border);
@@ -788,6 +806,7 @@ body {
 .team-card.active {
   border-color: rgba(255, 213, 74, 0.55);
   box-shadow: 0 0 0 2px rgba(255, 213, 74, 0.18), 0 16px 35px rgba(0,0,0,0.28);
+  filter: drop-shadow(0 0 16px rgba(255, 213, 74, 0.35));
 }
 
 .team-card__name {
@@ -1032,6 +1051,7 @@ body {
   line-height: 1.65;
   font-weight: 700;
   margin-bottom: 26px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .answer-box {
