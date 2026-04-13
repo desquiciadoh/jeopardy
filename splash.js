@@ -48,16 +48,13 @@
     const transition = document.getElementById('transition');
     const gameArea = document.getElementById('game-area');
 
-    // Phase 1: fade splash slightly and start rocket
     splash.classList.add('hide');
     transition.classList.add('active');
 
-    // Phase 2: after rocket lifts off, show game
     setTimeout(() => {
       gameArea.classList.add('visible');
     }, 900);
 
-    // Phase 3: clean up
     setTimeout(() => {
       transition.classList.remove('active');
       splash.style.display = 'none';

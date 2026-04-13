@@ -15,6 +15,8 @@
   const questionOverlay = document.getElementById("question-overlay");
   const finalSection = document.getElementById("final-section");
 
+  /* ═══════ Helpers ═══════ */
+
   function esc(v) {
     return String(v)
       .replaceAll("&", "&amp;")
@@ -45,6 +47,15 @@
 
   function sortedTeams() { return [...state.teams].sort((a, b) => b.score - a.score); }
 
+  /* ═══════ Auto-advance responding team ═══════ */
+
+  function advanceSelectedTeam() {
+    if (state.teams.length < 2) return;
+    const idx = state.teams.findIndex(t => t.id === state.selectedTeamId);
+    const next = (idx + 1) % state.teams.length;
+    state.selectedTeamId = state.teams[next].id;
+  }
+
   /* ═══════ Public API (window) ═══════ */
 
   window.addTeam = function () {
@@ -52,6 +63,19 @@
     if (!inp) return;
     const nm = inp.value.trim();
     if (!nm) return;
+
+    // Служебные команды
+    if (nm === "$results") {
+      inp.value = "";
+      finish();
+      return;
+    }
+    if (nm === "$skip") {
+      inp.value = "";
+      skipRound();
+      return;
+    }
+
     state.teams.push({ id: Date.now() + Math.random(), name: nm, score: 0 });
     if (!state.selectedTeamId) state.selectedTeamId = state.teams[0].id;
     inp.value = "";
@@ -84,7 +108,12 @@
     if (isUsed(ri, ti, qi)) return;
     const rd = GAME_CONFIG.rounds[ri], th = rd.themes[ti], q = th.questions[qi];
     const tm = state.teams.find(x => x.id === state.selectedTeamId);
-    state.activeQuestion = { ri, ti, qi, question: q, themeName: th.name, teamId: tm ? tm.id : null };
+    state.activeQuestion = {
+      ri, ti, qi,
+      question: q,
+      themeName: th.name,
+      teamId: tm ? tm.id : null
+    };
     state.answerShown = false;
     questionOverlay.classList.remove("hidden");
     renderModal();
@@ -107,6 +136,7 @@
     const t = state.teams.find(x => x.id === state.activeQuestion.teamId);
     if (t) t.score += state.activeQuestion.question.price;
     markUsed();
+    advanceSelectedTeam();
     proceed();
   };
 
@@ -115,6 +145,7 @@
     const t = state.teams.find(x => x.id === state.activeQuestion.teamId);
     if (t) t.score -= state.activeQuestion.question.price;
     markUsed();
+    advanceSelectedTeam();
     proceed();
   };
 
@@ -122,6 +153,20 @@
     state.roundOpen = !state.roundOpen;
     renderBoard();
   };
+
+  /* ═══════ Skip round ═══════ */
+
+  function skipRound() {
+    if (state.gameFinished) return;
+    const ri = state.currentRoundIndex;
+    if (ri < GAME_CONFIG.rounds.length - 1) {
+      state.currentRoundIndex = ri + 1;
+      state.roundOpen = true;
+      render();
+    } else {
+      finish();
+    }
+  }
 
   /* ═══════ Internals ═══════ */
 
@@ -146,8 +191,13 @@
   }
 
   function finish() {
+    if (state.gameFinished) return;
     state.gameFinished = true;
     state.roundOpen = false;
+    // Если вызвано из openQ / модалки — закрыть её
+    if (!questionOverlay.classList.contains("hidden")) {
+      closeQ();
+    }
     teamsSection.classList.add("hidden");
     boardSection.classList.add("hidden");
     renderFinal();
@@ -174,9 +224,9 @@
         <div class="answer-box ${state.answerShown ? "visible" : ""}">${esc(q.answer)}</div>
         <div class="question-actions">
           ${state.answerShown
-        ? `<button class="btn btn--green" onclick="correct()">Верно</button>
+            ? `<button class="btn btn--green" onclick="correct()">Верно</button>
                <button class="btn btn--red" onclick="wrong()">Неверно</button>`
-        : `<button class="btn btn--purple" onclick="showAns()">Показать ответ</button>
+            : `<button class="btn btn--purple" onclick="showAns()">Показать ответ</button>
                <button class="btn btn--soft" onclick="closeQ()">Назад</button>`}
         </div>
       </div>`;
@@ -190,7 +240,8 @@
           <span class="section-title__icon">★</span> Экипажи
         </h2></div>
         <div class="team-add">
-          <input id="team-name-input" type="text" placeholder="Название экипажа"
+          <input id="team-name-input" type="text"
+            placeholder="Название экипажа"
             onkeydown="if(event.key==='Enter')addTeam()"/>
           <button class="btn btn--main" onclick="addTeam()">Добавить</button>
         </div>
@@ -236,13 +287,13 @@
               <div class="theme-title">${esc(th.name)}</div>
               <div class="theme-cells">
                 ${th.questions.map((q, qi) => {
-          const u = isUsed(state.currentRoundIndex, ti, qi);
-          return `<div class="question-cell ${u ? "question-cell--used" : ""}">
+                  const u = isUsed(state.currentRoundIndex, ti, qi);
+                  return `<div class="question-cell ${u ? "question-cell--used" : ""}">
                     <div class="question-cell__price">${q.price}</div>
                     <button class="btn btn--gold question-cell__play" ${u ? "disabled" : ""}
                       onclick="openQ(${state.currentRoundIndex},${ti},${qi})">Играть</button>
                   </div>`;
-        }).join("")}
+                }).join("")}
               </div>
             </div>`).join("")}
         </div></div></div>` : ""}
@@ -256,8 +307,9 @@
     finalSection.innerHTML = `
       <div class="final-title">Миссия завершена</div>
       <div class="final-subtitle">Итоговая таблица результатов</div>
-      ${s.length === 0 ? `<div class="empty-state">Экипажи не добавлены.</div>` : `
-        <div class="leaderboard">${s.map((t, i) => `
+      ${s.length === 0
+        ? `<div class="empty-state">Экипажи не добавлены.</div>`
+        : `<div class="leaderboard">${s.map((t, i) => `
           <div class="leaderboard-item ${i === 0 ? "leaderboard-item--1" : ""}">
             <div class="leaderboard-place">${i + 1}</div>
             <div class="leaderboard-name">${esc(t.name)}</div>
