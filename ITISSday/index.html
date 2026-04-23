@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ИТИСС — Вопросы</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ═══════════ ФОНОВЫЕ ЭЛЕМЕНТЫ ═══════════ -->
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+
+  <!-- Фоновые электрические сигналы -->
+  <div class="bg-signals">
+    <div class="bsig bsig--1"></div>
+    <div class="bsig bsig--2"></div>
+    <div class="bsig bsig--3"></div>
+    <div class="bsig bsig--4"></div>
+    <div class="bsig bsig--5"></div>
+    <div class="bsig bsig--6"></div>
+  </div>
+
+  <!-- ═══════════ TRANSITION OVERLAY ═══════════ -->
+  <div id="transition" class="transition">
+    <div class="t-lines-wrap" id="tLinesWrap"></div>
+    <div class="t-flash"></div>
+  </div>
+
+  <!-- ═══════════ ОСНОВНОЙ ЭКРАН ═══════════ -->
+  <div class="app" id="app">
+
+    <!-- Шапка -->
+    <header class="app-header">
+      <div class="header-badge">
+        <span class="badge-dot"></span>
+        ИТИСС · НГИЭУ · 15 лет
+        <span class="badge-dot"></span>
+      </div>
+      <h1 class="header-title">Институт ИТиСС</h1>
+      <p class="header-sub">Информационных технологий и систем связи</p>
+    </header>
+
+    <!-- Прогресс -->
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span class="progress-label">Вопрос</span>
+        <span class="progress-counter">
+          <span id="qCurrent" class="mono">1</span>
+          <span class="progress-sep">/</span>
+          <span id="qTotal"   class="mono">?</span>
+        </span>
+      </div>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="progressFill"></div>
+        <div class="progress-bar-glow" id="progressGlow"></div>
+      </div>
+    </div>
+
+    <!-- Карточка вопроса -->
+    <div class="card-wrap">
+      <div class="card" id="questionCard">
+
+        <!-- Декоративный угол -->
+        <div class="card-corner card-corner--tl"></div>
+        <div class="card-corner card-corner--tr"></div>
+        <div class="card-corner card-corner--bl"></div>
+        <div class="card-corner card-corner--br"></div>
+
+        <!-- Номер вопроса -->
+        <div class="card-num" id="cardNum">01</div>
+
+        <!-- Текст вопроса -->
+        <div class="card-text" id="cardText">
+          Загрузка...
+        </div>
+
+        <!-- Сканлайн-декор -->
+        <div class="card-scanline"></div>
+      </div>
+    </div>
+
+    <!-- Навигация -->
+    <div class="nav-wrap">
+
+      <!-- Кнопка назад -->
+      <button class="nav-btn nav-btn--prev" id="prevBtn" disabled>
+        <span class="nav-btn__arrow">←</span>
+        <span class="nav-btn__label">Назад</span>
+      </button>
+
+      <!-- Центральный индикатор -->
+      <div class="nav-dots" id="navDots"></div>
+
+      <!-- Кнопка вперёд -->
+      <button class="nav-btn nav-btn--next" id="nextBtn">
+        <span class="nav-btn__label">Далее</span>
+        <span class="nav-btn__arrow">→</span>
+        <span class="nav-btn__pulse"></span>
+      </button>
+
+    </div>
+
+    <!-- Экран завершения -->
+    <div class="finish-screen hidden" id="finishScreen">
+      <div class="finish-icon">⬡</div>
+      <div class="finish-title">Все вопросы пройдены</div>
+      <div class="finish-sub">Сессия завершена успешно</div>
+      <button class="finish-restart" id="restartBtn">
+        <span>↺</span> Начать заново
+      </button>
+    </div>
+
+  </div>
+
+  <script src="questions.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
