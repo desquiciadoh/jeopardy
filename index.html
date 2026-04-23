@@ -3,78 +3,123 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Княгининский университет — Викторина ко Дню космонавтики</title>
+  <title>ИТИСС — Викторина к 15-летию института</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
   <!-- ═══════════ SPLASH ═══════════ -->
   <div id="splash">
-    <div class="splash-stars" id="splashStars"></div>
-    <div class="splash-nebula"></div>
 
-    <div class="splash-planet sp-earth"></div>
-    <div class="splash-planet sp-mars"></div>
-    <div class="splash-planet sp-saturn"></div>
-    <div class="splash-planet sp-moon"></div>
-    <div class="splash-planet sp-jupiter"></div>
+    <!-- Электрические сигналы на фоне (до клика) -->
+    <div class="splash-signals" id="splashSignals">
+      <div class="sig sig--1"></div>
+      <div class="sig sig--2"></div>
+      <div class="sig sig--3"></div>
+      <div class="sig sig--4"></div>
+      <div class="sig sig--5"></div>
+      <div class="sig sig--6"></div>
+      <div class="sig sig--7"></div>
+    </div>
 
-    <div class="sp-rocket sp-rocket--1">🚀</div>
-    <div class="sp-rocket sp-rocket--2">🚀</div>
+    <!-- Сетка / схема на фоне -->
+    <div class="splash-grid"></div>
+    <div class="splash-glow"></div>
 
-    <div class="sp-shoot sp-shoot--1"></div>
-    <div class="sp-shoot sp-shoot--2"></div>
-    <div class="sp-shoot sp-shoot--3"></div>
+    <!-- Плавающие иконки технологий -->
+    <div class="tech-float tf--1">⬡</div>
+    <div class="tech-float tf--2">⬡</div>
+    <div class="tech-float tf--3">⬡</div>
+    <div class="tech-float tf--4">◈</div>
+    <div class="tech-float tf--5">◈</div>
 
     <div class="splash-content">
-      <div class="splash-badge">12 апреля — День космонавтики</div>
-      <h1 class="splash-title">Княгининский<br>университет</h1>
-      <p class="splash-sub">Викторина о космосе и тех, кто его покорял</p>
+      <div class="splash-badge">
+        <span class="badge-dot"></span>
+        ИТИСС · НГИЭУ · 15 лет
+        <span class="badge-dot"></span>
+      </div>
+
+      <div class="splash-logo-wrap">
+        <div class="splash-logo-ring">
+          <div class="splash-logo-inner">
+            <span class="splash-logo-num">15</span>
+            <span class="splash-logo-years">лет</span>
+          </div>
+        </div>
+      </div>
+
+      <h1 class="splash-title">
+        <span class="splash-title__top">Институт</span>
+        <span class="splash-title__main">ИТиСС</span>
+        <span class="splash-title__sub">Информационных технологий<br>и систем связи</span>
+      </h1>
+
+      <p class="splash-uni">Княгининский университет — НГИЭУ</p>
 
       <div class="splash-fact-wrap">
         <div class="splash-fact" id="splashFact">
-          <span class="splash-fact-label">Знаете ли вы?</span>
+          <span class="splash-fact-label">💡 Знаете ли вы?</span>
           <span id="factText"></span>
         </div>
       </div>
 
       <button class="splash-launch" id="launchBtn">
-        <span class="launch-text">Поехали!</span>
-        <span class="launch-rocket"></span>
+        <span class="launch-icon">▶</span>
+        <span class="launch-text">Начать викторину</span>
+        <span class="launch-pulse"></span>
       </button>
     </div>
   </div>
 
-  <!-- ═══════════ TRANSITION ROCKET ═══════════ -->
+  <!-- ═══════════ TRANSITION ═══════════ -->
   <div id="transition" class="transition">
-    <div class="transition-rocket">🚀</div>
-    <div class="transition-trail"></div>
-    <div class="transition-flash"></div>
+    <div class="t-lines-wrap">
+      <div class="t-line tl--1"></div>
+      <div class="t-line tl--2"></div>
+      <div class="t-line tl--3"></div>
+      <div class="t-line tl--4"></div>
+      <div class="t-line tl--5"></div>
+      <div class="t-line tl--6"></div>
+      <div class="t-line tl--7"></div>
+      <div class="t-line tl--8"></div>
+      <div class="t-line tl--9"></div>
+      <div class="t-line tl--10"></div>
+      <div class="t-line tl--11"></div>
+      <div class="t-line tl--12"></div>
+    </div>
+    <div class="t-flash"></div>
   </div>
 
   <!-- ═══════════ GAME ═══════════ -->
   <div id="game-area">
-    <div class="game-bg-stars" id="gameStars"></div>
-    <div class="game-nebula"></div>
 
-    <div class="game-planet gp-earth"></div>
-    <div class="game-planet gp-small"></div>
-    <div class="game-planet gp-saturn"></div>
+    <!-- Фоновые элементы игровой зоны -->
+    <div class="game-grid-bg"></div>
+    <div class="game-glow-bg"></div>
 
-    <div class="game-rocket gr--1">🚀</div>
-    <div class="game-rocket gr--2">🚀</div>
-
-    <div class="game-shoot gs--1"></div>
-    <div class="game-shoot gs--2"></div>
+    <!-- Тихие сигналы на фоне игры -->
+    <div class="game-sig gsig--1"></div>
+    <div class="game-sig gsig--2"></div>
+    <div class="game-sig gsig--3"></div>
 
     <main class="app">
       <header class="hero">
-        <div class="hero__badge">12 апреля — День космонавтики</div>
-        <h1 class="hero__title">Княгининский университет</h1>
-        <p class="hero__sub">Викторина о космосе и тех, кто его покорял</p>
-        <div class="hero__divider">✦ ✧ ✦</div>
+        <div class="hero__badge">
+          <span class="hero__badge-dot"></span>
+          ИТИСС · 15 лет · Викторина
+          <span class="hero__badge-dot"></span>
+        </div>
+        <h1 class="hero__title">Институт ИТиСС</h1>
+        <p class="hero__sub">Информационных технологий и систем связи · НГИЭУ</p>
+        <div class="hero__divider">
+          <span></span>
+          <span class="hero__divider-icon">⬡</span>
+          <span></span>
+        </div>
       </header>
 
       <section id="teams-section" class="panel teams-panel"></section>

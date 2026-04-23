@@ -237,7 +237,7 @@
     teamsSection.innerHTML = `
       <div class="team-topbar">
         <div><h2 class="section-title">
-          <span class="section-title__icon">★</span> Экипажи
+          <span class="section-title__icon">★</span> Команды
         </h2></div>
         <div class="team-add">
           <input id="team-name-input" type="text"
@@ -247,7 +247,7 @@
         </div>
       </div>
       ${state.teams.length === 0
-        ? `<div class="empty-state">Добавьте экипажи и выберите отвечающий.</div>`
+        ? `<div class="empty-state">Добавьте команды и выберите отвечающий.</div>`
         : `<div class="teams-grid">${state.teams.map(t => `
           <div class="team-card ${state.selectedTeamId === t.id ? "active" : ""}">
             <div class="team-card__name">${esc(t.name)}</div>
@@ -308,7 +308,7 @@
       <div class="final-title">Миссия завершена</div>
       <div class="final-subtitle">Итоговая таблица результатов</div>
       ${s.length === 0
-        ? `<div class="empty-state">Экипажи не добавлены.</div>`
+        ? `<div class="empty-state">Команды не добавлены.</div>`
         : `<div class="leaderboard">${s.map((t, i) => `
           <div class="leaderboard-item ${i === 0 ? "leaderboard-item--1" : ""}">
             <div class="leaderboard-place">${i + 1}</div>
